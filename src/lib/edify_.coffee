@@ -35,6 +35,15 @@ highlight = (section, block, callback) ->
     section.html.push("<div class='highlight'><pre>" + block + "</pre></div>")
     callback()
 
+# The Twinkie model will work great for this project. Twinkie will ever be of
+# any interest to anyone but myself. Using a Cakefile to initiate a build,
+# however, will be appealing. The problem with Twinkie is that we want people to
+# check out and build immediately, so it must be written in pure CoffeeScript,
+# because too many build dependencies are going to frustrate adoption.
+# Generating an entire web site, that requires something. People already use a
+# command line application do this, they are expecting it. We'll require that
+# you run npm, which they expect, but then run cake. All the configuration goes
+# into the Cakefile.
 class Edify
   constructor: ->
     @contents = []
