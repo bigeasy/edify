@@ -1,4 +1,5 @@
 fs = require "fs"
+
 # Highlights a single chunk of CoffeeScript code, using **Pygments** over stdio,
 # and runs the text of its corresponding comment through **Markdown**, using the
 # **Github-flavored-Markdown** modification of
@@ -86,6 +87,6 @@ class Edify
       for dir in dirs
         continue if /^\./.test dir
         find commands, "#{from}/#{dir}",  "#{to}/#{dir}", _
-    @steps.push (commands) -> find commands, from, to
+      @steps.push (commands) -> find commands, from, to
 
 exports.edify = -> new Edify
