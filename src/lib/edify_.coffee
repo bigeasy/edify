@@ -1,4 +1,17 @@
-fs = require "fs"
+fs      = require "fs"
+stencil = require "stencil"
+
+# Copy values from one hash into another.
+extend = (to, from) ->
+  to[key] = value for key, value of from
+  to
+
+# Useful for debugging. If you don't see them called in the code, it means the
+# code is absolutely bug free.
+die = (splat...) ->
+  console.log.apply null, splat if splat.length
+  process.exit 1
+say = (splat...) -> console.log.apply null, splat
 
 # Highlights a single chunk of CoffeeScript code, using **Pygments** over stdio,
 # and runs the text of its corresponding comment through **Markdown**, using the
@@ -48,10 +61,16 @@ highlight = (section, block, callback) ->
 class Edify
   constructor: ->
     @contents = []
-  parse: (options) ->
-    @contents.push options
-  copy: (from, to, include, exclude) ->
-    find = (commands, from, to, _) ->
+    @languages = {}
+  parse: (options...) -> @contents.push options
+  language: (language, options) ->
+    suffixes = options.suffix
+    suffixes = [ suffixes ] if not Array.isArray(suffix)
+    for suffix in suffixes
+      @languages[suffix] = extend { language }, options
+  _find: (from, to, include, exclude) ->
+    find = (found, from, to, _) ->
+      found ?= []
       # Gather up the CoffeeScript files and directories in the source directory.
       files = []
       dirs = []
@@ -82,11 +101,37 @@ class Edify
               fs.mkdir path[0..i].join("/"), parseInt(755, 8), _
             catch e
               throw e if e.code isnt "EEXIST"
-        commands.push [ "cp", files.concat(to) ]
+        found.push files.concat(to)
 
       for dir in dirs
         continue if /^\./.test dir
-        find commands, "#{from}/#{dir}",  "#{to}/#{dir}", _
-      @steps.push (commands) -> find commands, from, to
+        find found, "#{from}/#{dir}",  "#{to}/#{dir}", _
 
-exports.edify = -> new Edify
+      found
+    (_) -> find([], from, to,_)
+  _format: (from, to, _) ->
+    language = @languages[/\.([^.]+)$/.exec(from)[1]]
+    lines = fs.readFile(from, "utf8", _).split(/\n/)
+    file = [{}]
+    for line in lines
+      if match = language.docco.exec line
+        file.unshift { docco: [] } unless file[0].docco
+        file[0].docco.push match[1]
+      else
+        file.unshift { source: [] } unless file[0].source
+        file[0].source.push line
+    file.pop()
+    file.reverse()
+    base = /^.*\/(.*)\.[^.]+/.exec(from)[1]
+    fs.writeFile "#{to}/#{base}.html", "<p>Hello, World!</p>", "utf8", _
+  _edify: (_) ->
+    for content in @contents
+      [ language, from, to, include, exclude ] = content
+      for batch in @_find(from, to, include, exclude)(_)
+        to = batch.pop()
+        for from in batch
+          @_format(from, to, _)
+  tasks: ->
+    task "edify", """Construct web site.""", => @_edify (error) -> throw error if error
+
+module.exports = -> new Edify
