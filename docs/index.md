@@ -9,6 +9,8 @@ you manage.
 
 - `Edify.tasks(task)` - Create Edify tasks.
 - `task` - the task object in the CoffeeScript file.
+- `options` - Example of an options list.
+-- `foo` - First option?
 
 Creates the Eidfy specific tasks in the coffee script file. These are visible
 using use namespace `"edify"`.
