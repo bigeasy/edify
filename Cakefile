@@ -12,5 +12,5 @@ edify.language "c"
     strip:  /^\s+\*/
 edify.parse "coffee", "code/src", "src", /\.coffee$/
 edify.parse "code/README.md", "index.html"
-edify.stencil /code\/.*.md/, "code/edify/default.stencil"
+edify.stencil /code\/docs\/.*.md/, "stencil/markdown.stencil"
 edify.tasks task

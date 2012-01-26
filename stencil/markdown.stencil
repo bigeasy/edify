@@ -1,0 +1,8 @@
+${ "layout.stencil" }:
+${ head }:
+<title>Hello, World!</title>
+${ end }
+${ body }:
+<p>You've called a Stencil specified by the Cakefile.</p>
+${ end }
+${ end }
