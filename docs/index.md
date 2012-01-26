@@ -7,5 +7,8 @@ able to checkout a private module.
 Alternatively, you can publish an Edify web site using `rsync` to a server that
 you manage.
 
-- `Edify.tasks(task)`
+- `Edify.tasks(task)` - Create Edify tasks.
 - `task` - the task object in the CoffeeScript file.
+
+Creates the Eidfy specific tasks in the coffee script file. These are visible
+using use namespace `"edify"`.
