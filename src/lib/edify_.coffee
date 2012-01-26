@@ -68,69 +68,82 @@ class Edify
     suffixes = [ suffixes ] if not Array.isArray(suffix)
     for suffix in suffixes
       @languages[suffix] = extend { language }, options
+  stencil: ->
   _find: (from, to, include, exclude) ->
     find = (found, from, to, _) ->
       found ?= []
-      # Gather up the CoffeeScript files and directories in the source directory.
-      files = []
-      dirs = []
-      for file in fs.readdir from, _
-        source = "#{from}/#{file}"
-        if include.test(source) and not (exclude and exclude.test(source))
-          try
-            if fs.stat(source, _).mtime > fs.stat("#{to}/#{file}", _).mtime
-              files.push source
-          catch e
-            files.push source
-        else
-          try
-            stat = fs.stat "#{from}/#{file}", _
-            if stat.isDirectory()
-              dirs.push file # Create the destination directory if it does not exist.
-          catch e
-            console.warn "Cannot stat: #{from}/#{file}"
-            throw e if e.code isnt "ENOENT"
-            console.warn "File disappeared: #{from}/#{file}"
-      if files.length
-        try
-          fs.stat to, _
-        catch e
-          path = to.split /\//
-          for i in [0..path.length]
+      stat = fs.stat from, _
+      if stat.isDirectory()
+        # Gather up the CoffeeScript files and directories in the source directory.
+        files = []
+        dirs = []
+        for file in fs.readdir from, _
+          source = "#{from}/#{file}"
+          if include.test(source) and not (exclude and exclude.test(source))
             try
-              fs.mkdir path[0..i].join("/"), parseInt(755, 8), _
+              if fs.stat(source, _).mtime > fs.stat("#{to}/#{file}", _).mtime
+                files.push source
             catch e
-              throw e if e.code isnt "EEXIST"
-        found.push files.concat(to)
+              files.push source
+          else
+            try
+              stat = fs.stat "#{from}/#{file}", _
+              if stat.isDirectory()
+                dirs.push file # Create the destination directory if it does not exist.
+            catch e
+              console.warn "Cannot stat: #{from}/#{file}"
+              throw e if e.code isnt "ENOENT"
+              console.warn "File disappeared: #{from}/#{file}"
+        if files.length
+          try
+            fs.stat to, _
+          catch e
+            path = to.split /\//
+            for i in [0..path.length]
+              try
+                fs.mkdir path[0..i].join("/"), parseInt(755, 8), _
+              catch e
+                throw e if e.code isnt "EEXIST"
+          for file in files
+            base = /^.*\/(.*)\.[^.]+/.exec(file)[1]
+            found.push [ file, "#{to}/#{base}.html" ]
 
-      for dir in dirs
-        continue if /^\./.test dir
-        find found, "#{from}/#{dir}",  "#{to}/#{dir}", _
-
+        for dir in dirs
+          continue if /^\./.test dir
+          find found, "#{from}/#{dir}",  "#{to}/#{dir}", _
+      else
+        found.push [ from, to ]
       found
     (_) -> find([], from, to,_)
-  _format: (from, to, _) ->
-    language = @languages[/\.([^.]+)$/.exec(from)[1]]
+  _format: (language, from, to, _) ->
     lines = fs.readFile(from, "utf8", _).split(/\n/)
     file = [{}]
-    for line in lines
-      if match = language.docco.exec line
-        file.unshift { docco: [] } unless file[0].docco
-        file[0].docco.push match[1]
-      else
-        file.unshift { source: [] } unless file[0].source
-        file[0].source.push line
+    if language is "markdown"
+      file.push { docco: lines }
+    else
+      language = @languages[language]
+      for line in lines
+        if match = language.docco.exec line
+          file.unshift { docco: [] } unless file[0].docco
+          file[0].docco.push match[1]
+        else
+          file.unshift { source: [] } unless file[0].source
+          file[0].source.push line
     file.pop()
     file.reverse()
-    base = /^.*\/(.*)\.[^.]+/.exec(from)[1]
-    fs.writeFile "#{to}/#{base}.html", "<p>Hello, World!</p>", "utf8", _
+    fs.writeFile to, "<p>Hello, World!</p>", "utf8", _
   _edify: (_) ->
     for content in @contents
-      [ language, from, to, include, exclude ] = content
+      count = 0
+      count++ while typeof content[count] is "string"
+      if count is 2
+        [ from, to, include, exclude ] = content
+        language = "markdown"
+      else
+        [ language, from, to, include, exclude ] = content
       for batch in @_find(from, to, include, exclude)(_)
-        to = batch.pop()
-        for from in batch
-          @_format(from, to, _)
+        [ from, to ] = batch
+        @_format(language, from, to, _)
   tasks: ->
     task "edify", """Construct web site.""", => @_edify (error) -> throw error if error
 
