@@ -1,6 +1,13 @@
 fs      = require "fs"
 stencil = require "stencil"
 
+engine = new stencil.Engine (resource, compiler, callback) ->
+  fs.readFile "#{resource}", "utf8", (error, source) ->
+    if error
+      callback error
+    else
+      compiler source, callback
+
 # Copy values from one hash into another.
 extend = (to, from) ->
   to[key] = value for key, value of from
@@ -131,7 +138,8 @@ class Edify
           file[0].source.push line
     file.pop()
     file.reverse()
-    fs.writeFile to, "<p>Hello, World!</p>", "utf8", _
+    output = engine.execute "stencil/markdown.stencil", { file }, _
+    fs.writeFile to, output, "utf8", _
   _edify: (_) ->
     for content in @contents
       count = 0
