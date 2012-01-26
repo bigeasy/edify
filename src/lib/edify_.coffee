@@ -69,13 +69,15 @@ class Edify
   constructor: ->
     @contents = []
     @languages = {}
+    @templates = []
   parse: (options...) -> @contents.push options
   language: (language, options) ->
     suffixes = options.suffix
     suffixes = [ suffixes ] if not Array.isArray(suffix)
     for suffix in suffixes
       @languages[suffix] = extend { language }, options
-  stencil: ->
+  stencil: (regex, stencil) ->
+    @templates.push { regex, stencil }
   _find: (from, to, include, exclude) ->
     find = (found, from, to, _) ->
       found ?= []
@@ -138,7 +140,10 @@ class Edify
           file[0].source.push line
     file.pop()
     file.reverse()
-    output = engine.execute "stencil/markdown.stencil", { file }, _
+    for template in @templates
+      if template.regex.test from
+        break
+    output = engine.execute template.stencil, { file }, _
     fs.writeFile to, output, "utf8", _
   _edify: (_) ->
     for content in @contents
