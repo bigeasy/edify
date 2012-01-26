@@ -1,5 +1,6 @@
 fs      = require "fs"
 stencil = require "stencil"
+showdown = require "./../vendor/showdown"
 
 engine = new stencil.Engine (resource, compiler, callback) ->
   fs.readFile "#{resource}", "utf8", (error, source) ->
@@ -28,6 +29,8 @@ say = (splat...) -> console.log.apply null, splat
 # We process the entire file in a single call to Pygments by inserting little
 # marker comments between each section and then splitting the result string
 # wherever our markers occur.
+
+#
 highlight = (section, block, callback) ->
   language = block.shift()
   if language
@@ -126,24 +129,26 @@ class Edify
     (_) -> find([], from, to,_)
   _format: (language, from, to, _) ->
     lines = fs.readFile(from, "utf8", _).split(/\n/)
-    file = [{}]
+    page = [{}]
     if language is "markdown"
-      file.push { docco: lines }
+      page.push { docco: lines }
     else
       language = @languages[language]
       for line in lines
         if match = language.docco.exec line
-          file.unshift { docco: [] } unless file[0].docco
-          file[0].docco.push match[1]
+          page.unshift { docco: [] } if page[0].source
+          page[0].docco.push match[1]
         else
-          file.unshift { source: [] } unless file[0].source
-          file[0].source.push line
-    file.pop()
-    file.reverse()
+          page[0].source = [] unless page[0].source
+          page[0].source.push line
+    page.reverse()
+    page.pop() unless page[page.length - 1].source
+    for section in page
+      section.docco = showdown.makeHtml(section.docco.join("\n"))
     for template in @templates
       if template.regex.test from
         break
-    output = engine.execute template.stencil, { file }, _
+    output = engine.execute template.stencil, { page }, _
     fs.writeFile to, output, "utf8", _
   _edify: (_) ->
     for content in @contents

@@ -1360,4 +1360,4 @@ var escapeCharacters_callback = function(wholeMatch,m1) {
 
 } // end of Showdown.converter
 
-modules.exports.showdown = new Showdown.converter();
+module.exports = new Showdown.converter();
