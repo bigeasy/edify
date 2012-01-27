@@ -208,7 +208,7 @@ class Edify
       @server.listen(8088)
   tasks: ->
     task "edify", "Construct web site.", => @_edify (error) -> throw error if error
-    task "edify:watch", "Serve web site and watch for changes.", =>
+    task "edify:serve", "Serve web site and watch for changes.", =>
       @_dirty = true
       @_server()
 

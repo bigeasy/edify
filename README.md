@@ -14,3 +14,5 @@ I don't like the aribtrary wait. Can I detect a real change?
 Okay. Mark as dirty. There ought to be enough time between the write and the
 reload to trigger a rebuild. That did it. No more problems! Yeah! So now I have
 to style these. Let's try to style the Docco.
+
+Added timeout. Hello?
