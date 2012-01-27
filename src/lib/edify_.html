@@ -3,7 +3,7 @@
 <head>
 <title>edify_.coffee</title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" media="all" href="/css/docco.css">
+<link rel="stylesheet" media="all" href="/edify/css/docco.css">
 </head>
 <body>
 <div id="container">
@@ -22,7 +22,7 @@
 <code>gh-pages</code>. Docco inspired. Not quite as quick and dirty as Docco.</p>
 
 <ul>
-<li><a href="/index.html">Home</a></li>
+<li><a href="/edify/index.html">Home</a></li>
 </ul></td>
           <td class="code"><div class="highlight"><pre><div class="highlight"><pre></pre></div></td>
         </tr>
@@ -301,7 +301,7 @@ context it needs to color the code.</p></td>
   <span class="nv">_serve: </span><span class="nf">(request, response, _) -&gt;</span>
     <span class="k">try</span>
       <span class="nx">@_watch</span><span class="p">(</span><span class="nx">_</span><span class="p">)</span> <span class="k">if</span> <span class="nx">@_dirty</span>
-      <span class="nv">path = </span><span class="nx">parse</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">).</span><span class="nx">pathname</span>
+      <span class="nv">path = </span><span class="nx">parse</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">).</span><span class="nx">pathname</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\/[^/]+/</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
       <span class="nv">file = </span><span class="s2">&quot;#{process.cwd()}#{path}&quot;</span>
       <span class="nv">mime = </span><span class="nx">@_mime</span><span class="p">[</span><span class="sr">/\.([^.]+)$/</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">file</span><span class="p">)[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">or</span> <span class="s2">&quot;text/plain&quot;</span>
       <span class="nv">stat = </span><span class="nx">fs</span><span class="p">.</span><span class="nx">stat</span> <span class="nx">file</span><span class="p">,</span> <span class="nx">_</span>

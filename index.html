@@ -3,8 +3,8 @@
 <head>
 <link rel="stylesheet" type="text/css" href="/stylesheets/edify.css"><title>Hello, World!</title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" media="all" href="/css/docco.css">
-<link rel="stylesheet" media="all" href="/css/markdown.css">
+<link rel="stylesheet" media="all" href="/edify/css/docco.css">
+<link rel="stylesheet" media="all" href="/edify/css/markdown.css">
 </head>
 <body>
 <div class="container"><div id="container">
@@ -28,6 +28,10 @@ to style these. Let's try to style the Docco.</p>
 
 <p>Added timeout. Hello?</p>
 
+<ul>
+<li><a href="/edify/src/lib/edify_.html">edify_.html</a></li>
+</ul>
+
 <h2>Concerns and Decisions</h2>
 
 <ul>
@@ -38,6 +42,11 @@ search.</li>
 <li>Patterns should match relative to the project root.</li>
 <li>Name collisions are a problem in C. A <code>.h</code> file and a <code>.c</code> file may share the
 same names.</li>
+<li>Base is annoying. We probably base off of a project subdirectory most of the
+time as in <code>/edify</code>, but this is going to be goofy when people view Markdown
+files in GitHub, they will be relative to GitHub. I'd like to be able to have
+those rewritten when served locally, stripping the prefix so it will navigate
+correctly.</li>
 </ul>
 
 <p>Using Cakefile as the interface to Edify. Got this idea from my own batch of
