@@ -1,7 +1,7 @@
 # Quick and dirty GitHub documention generation designed to work with
 # `gh-pages`. Docco inspired. Not quite as quick and dirty as Docco.
 #
-# * [Home](/index.html)
+# * [Home](/edify/index.html)
 
 # Node.js requirements.
 fs      = require "fs"
@@ -203,7 +203,7 @@ class Edify
   _serve: (request, response, _) ->
     try
       @_watch(_) if @_dirty
-      path = parse(request.url).pathname
+      path = parse(request.url).pathname.replace(/\/[^/]+/, '')
       file = "#{process.cwd()}#{path}"
       mime = @_mime[/\.([^.]+)$/.exec(file)[1]] or "text/plain"
       stat = fs.stat file, _

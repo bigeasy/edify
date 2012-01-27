@@ -17,6 +17,8 @@ to style these. Let's try to style the Docco.
 
 Added timeout. Hello?
 
+ * <a href="/edify/src/lib/edify_.html">edify\_.html</a>
+
 ## Concerns and Decisions
 
  * Wondering if I want to implement globs.
@@ -26,6 +28,11 @@ Added timeout. Hello?
  * Patterns should match relative to the project root.
  * Name collisions are a problem in C. A `.h` file and a `.c` file may share the
    same names.
+ * Base is annoying. We probably base off of a project subdirectory most of the
+   time as in `/edify`, but this is going to be goofy when people view Markdown
+   files in GitHub, they will be relative to GitHub. I'd like to be able to have
+   those rewritten when served locally, stripping the prefix so it will navigate
+   correctly.
 
 Using Cakefile as the interface to Edify. Got this idea from my own batch of
 Cakefile utilities, Twinkie. The problem with Twinkie is that we want people to
