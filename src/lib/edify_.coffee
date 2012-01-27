@@ -163,7 +163,7 @@ class Edify
           if docco
             if match = language.docco.end.exec line
               if match[1].trim()
-                page[0].docco.push match[1]
+                page[0].docco.push match[1].replace language.docco.strip, ""
               docco = false
             else
               page[0].docco.push line.replace language.docco.strip, ""
