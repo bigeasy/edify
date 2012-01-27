@@ -1,6 +1,7 @@
-fs      = require "fs"
-stencil = require "stencil"
-showdown = require "./../vendor/showdown"
+fs        = require "fs"
+stencil   = require "stencil"
+showdown  = require "./../vendor/showdown"
+parse     = require("url").parse
 
 engine = new stencil.Engine (resource, compiler, callback) ->
   fs.readFile "#{resource}", "utf8", (error, source) ->
@@ -73,6 +74,15 @@ class Edify
     @contents = []
     @languages = {}
     @templates = []
+    @_mime =
+      jpg: "image/jpg"
+      jpeg: "image/jpg"
+      png: "image/png"
+      gif: "image/gif"
+      js: "application/javascript"
+      html: "text/html"
+      css: "text/css"
+      txt: "text/plain"
   parse: (options...) -> @contents.push options
   language: (language, options) ->
     suffixes = options.suffix
@@ -151,6 +161,7 @@ class Edify
     output = engine.execute template.stencil, { page }, _
     fs.writeFile to, output, "utf8", _
   _edify: (_) ->
+    sources = []
     for content in @contents
       count = 0
       count++ while typeof content[count] is "string"
@@ -161,8 +172,44 @@ class Edify
         [ language, from, to, include, exclude ] = content
       for batch in @_find(from, to, include, exclude)(_)
         [ from, to ] = batch
+        sources.push from
         @_format(language, from, to, _)
+    sources
+  _serve: (request, response, _) ->
+    try
+      @_watch(_) if @_dirty
+      path = parse(request.url).pathname
+      file = "#{process.cwd()}#{path}"
+      mime = @_mime[/\.([^.]+)$/.exec(file)[1]] or "text/plain"
+      stat = fs.stat file, _
+      response.writeHead 200, "Content-Type": mime, "Content-Length": stat.size
+      response.end fs.readFile(file, _)
+    catch e
+      if e.code is "ENOENT"
+        response.writeHead 404, "Content-Type": "text/plain"
+        response.end "Not found."
+      else
+        response.writeHead 500, "Content-Type": "text/plain"
+        response.end e.toString()
+  _watch: (_) ->
+    @_dirty = false
+    sources = @_edify(_)
+    update = (current, previous) =>
+      if current.mtime.getTime() != previous.mtime.getTime()
+        for source in sources
+          fs.unwatchFile source
+        @_dirty = true
+    for source in sources
+      fs.watchFile source, update
+  _server: ->
+      http = require('http')
+      @server = http.createServer (request, response) =>
+        @_serve request, response, (error) -> throw error if error
+      @server.listen(8088)
   tasks: ->
-    task "edify", """Construct web site.""", => @_edify (error) -> throw error if error
+    task "edify", "Construct web site.", => @_edify (error) -> throw error if error
+    task "edify:watch", "Serve web site and watch for changes.", =>
+      @_dirty = true
+      @_server()
 
 module.exports = -> new Edify
