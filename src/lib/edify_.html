@@ -1,11 +1,347 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="/stylesheets/edify.css"><title>Hello, World!</title>
+<title>edify_.coffee</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" media="all" href="/css/docco.css">
 </head>
 <body>
-<div class="container"><p></p>
+<div id="container">
+<div id="background"></div>
+  <table cellspacing="0" cellpadding="0">
+    <thead>
+      <tr>
+        <th class="docs"><h1>edify_.coffee</th>
+        <th class="code"></th>
+      </tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+          <td class="docs"><p>Quick and dirty GitHub documention generation designed to work with
+<code>gh-pages</code>. Docco inspired. Not quite as quick and dirty as Docco.</p>
 
+<ul>
+<li><a href="/index.html">Home</a></li>
+</ul></td>
+          <td class="code"><div class="highlight"><pre><div class="highlight"><pre></pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"><p>Node.js requirements.</p></td>
+          <td class="code"><div class="highlight"><pre>
+<span class="nv">fs      = </span><span class="nx">require</span> <span class="s2">&quot;fs&quot;</span>
+<span class="nv">spawn   = </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;child_process&quot;</span><span class="p">).</span><span class="nx">spawn</span>
+<span class="nv">parse   = </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">).</span><span class="nx">parse</span>
+</pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"><p>Stencil is our templating language. Stencil is asynchronous. It does layouts,
+includes and snippets.</p></td>
+          <td class="code"><div class="highlight"><pre>
+<span class="nv">stencil   = </span><span class="nx">require</span> <span class="s2">&quot;stencil&quot;</span></pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"><p>This is GitHub Flavored Markdown Showdown. The original Docco removed the
+GitHub flavors. We'll follow suit when we figure out why.</p></td>
+          <td class="code"><div class="highlight"><pre>
+<span class="nv">showdown  = </span><span class="nx">require</span> <span class="s2">&quot;./../vendor/showdown&quot;</span>
+</pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"><p>The Stencil rendering engine needs a resolver to load the unparsed Stencils.
+We read them from the file system relative to the root of the <code>gh-pages</code>
+project directory.</p></td>
+          <td class="code"><div class="highlight"><pre>
+<span class="nv">engine = </span><span class="k">new</span> <span class="nx">stencil</span><span class="p">.</span><span class="nx">Engine</span> <span class="nf">(resource, compiler, callback) -&gt;</span>
+  <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span> <span class="s2">&quot;#{resource}&quot;</span><span class="p">,</span> <span class="s2">&quot;utf8&quot;</span><span class="p">,</span> <span class="nf">(error, source) -&gt;</span>
+    <span class="k">if</span> <span class="nx">error</span>
+      <span class="nx">callback</span> <span class="nx">error</span>
+    <span class="k">else</span>
+      <span class="nx">compiler</span> <span class="nx">source</span><span class="p">,</span> <span class="nx">callback</span>
+</pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"><h3>Utilities</h3></td>
+          <td class="code"><div class="highlight"><pre>
+</pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"><p>Copy values from one hash into another.</p></td>
+          <td class="code"><div class="highlight"><pre>
+<span class="nv">extend = </span><span class="nf">(to, from) -&gt;</span>
+  <span class="nx">to</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span> <span class="k">for</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span> <span class="k">of</span> <span class="nx">from</span>
+  <span class="nx">to</span>
+</pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"><p>Useful for debugging. If you don't see them called in the code, it means the
+code is absolutely bug free.</p></td>
+          <td class="code"><div class="highlight"><pre>
+<span class="nv">die = </span><span class="nf">(splat...) -&gt;</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">.</span><span class="nx">apply</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">splat</span> <span class="k">if</span> <span class="nx">splat</span><span class="p">.</span><span class="nx">length</span>
+  <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span> <span class="mi">1</span>
+<span class="nv">say = </span><span class="nf">(splat...) -&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">.</span><span class="nx">apply</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">splat</span>
+</pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"><p>Highlight a block of code using <a href="http://pygments.org/">Pygments</a>. We call this
+method to highlight the code blocks for literate programming. We also use it
+for highlighting the examples in plain old Markdown.</p>
+
+<p>When formatting for literate programming, we chunk all the code together with
+dividers just as the origina Docco does. See below.</p></td>
+          <td class="code"><div class="highlight"><pre>
+<span class="nv">pygmentize = </span><span class="nf">(language, code, callback) -&gt;</span>
+  <span class="nv">pygments = </span><span class="nx">spawn</span> <span class="s2">&quot;pygmentize&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;-l&quot;</span><span class="p">,</span> <span class="nx">language</span><span class="p">,</span> <span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="s2">&quot;html&quot;</span><span class="p">,</span> <span class="s2">&quot;-O&quot;</span><span class="p">,</span> <span class="s2">&quot;encoding=utf-8&quot;</span><span class="p">],</span> <span class="p">{</span> <span class="nv">customFds: </span><span class="p">[</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="p">]</span> <span class="p">}</span>
+  <span class="nv">output = </span><span class="p">[]</span>
+  <span class="nx">pygments</span><span class="p">.</span><span class="nx">stdout</span><span class="p">.</span><span class="nx">setEncoding</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+  <span class="nx">pygments</span><span class="p">.</span><span class="nx">stdout</span><span class="p">.</span><span class="kc">on</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="nf">(data) -&gt;</span> <span class="nx">output</span><span class="p">.</span><span class="nx">push</span> <span class="nx">data</span>
+  <span class="nx">pygments</span><span class="p">.</span><span class="nx">addListener</span> <span class="s1">&#39;exit&#39;</span><span class="p">,</span> <span class="nf">(code) -&gt;</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">output</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">))</span>
+  <span class="nx">pygments</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">code</span><span class="p">)</span>
+  <span class="nx">pygments</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span>
+</pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"><p>Not in use, yet. It is from my previous project, IDL. It is used to format a
+block of code when a Pygments lexer cannot be found for it.</p></td>
+          <td class="code"><div class="highlight"><pre>
+<span class="nv">pre = </span><span class="nf">(block) -&gt;</span>
+  <span class="nv">indent = </span><span class="nb">parseInt</span><span class="p">(</span><span class="sr">/^(\s*)/</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">block</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">)</span>
+  <span class="nv">block = </span><span class="k">for</span> <span class="nx">line</span> <span class="k">in</span> <span class="nx">block</span>
+    <span class="nx">line</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="nx">indent</span><span class="p">)</span>
+  <span class="nv">block = </span><span class="nx">block</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">&quot;\n&quot;</span><span class="p">)</span>
+  <span class="nv">block = </span><span class="nx">block</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;/g</span><span class="p">,</span> <span class="s2">&quot;&amp;amp&quot;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;/g</span><span class="p">,</span> <span class="s2">&quot;&amp;lt;&quot;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&gt;/g</span><span class="p">,</span> <span class="s2">&quot;&amp;gt;&quot;</span><span class="p">)</span>
+  <span class="nx">section</span><span class="p">.</span><span class="nx">html</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s2">&quot;&lt;div class=&#39;highlight&#39;&gt;&lt;pre&gt;&quot;</span> <span class="o">+</span> <span class="nx">block</span> <span class="o">+</span> <span class="s2">&quot;&lt;/pre&gt;&lt;/div&gt;&quot;</span><span class="p">)</span>
+  <span class="nx">callback</span><span class="p">()</span>
+</pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"><p>We use a Cakefile to initiate a build. The Edify class will define tasks in
+the Cakefile. The public methods of Edify are used to configure the Cakefile
+tasks that the Edify class creates.</p></td>
+          <td class="code"><div class="highlight"><pre>
+</pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"></td>
+          <td class="code"><div class="highlight"><pre>
+<span class="k">class</span> <span class="nx">Edify</span>
+  <span class="nv">constructor: </span><span class="o">-&gt;</span>
+    <span class="vi">@contents = </span><span class="p">[]</span>
+    <span class="vi">@languages = </span><span class="p">{}</span>
+    <span class="vi">@templates = </span><span class="p">[]</span>
+    <span class="vi">@_mime =</span>
+      <span class="nv">jpg: </span><span class="s2">&quot;image/jpg&quot;</span>
+      <span class="nv">jpeg: </span><span class="s2">&quot;image/jpg&quot;</span>
+      <span class="nv">png: </span><span class="s2">&quot;image/png&quot;</span>
+      <span class="nv">gif: </span><span class="s2">&quot;image/gif&quot;</span>
+      <span class="nv">js: </span><span class="s2">&quot;application/javascript&quot;</span>
+      <span class="nv">html: </span><span class="s2">&quot;text/html&quot;</span>
+      <span class="nv">css: </span><span class="s2">&quot;text/css&quot;</span>
+      <span class="nv">txt: </span><span class="s2">&quot;text/plain&quot;</span>
+  <span class="nv">parse: </span><span class="nf">(options...) -&gt;</span> <span class="nx">@contents</span><span class="p">.</span><span class="nx">push</span> <span class="nx">options</span>
+  <span class="nv">language: </span><span class="nf">(language, options) -&gt;</span>
+    <span class="k">if</span> <span class="k">typeof</span> <span class="nx">options</span><span class="p">.</span><span class="nx">docco</span> <span class="o">is</span> <span class="s2">&quot;string&quot;</span>
+      <span class="nv">options.docco = </span><span class="k">new</span> <span class="nb">RegExp</span> <span class="s2">&quot;^\\s*#{options.docco}\\s*(.*)&quot;</span>
+      <span class="nv">options.divider = </span><span class="s2">&quot;# --- EDIFY DIVIDER ---&quot;</span>
+    <span class="nx">@languages</span><span class="p">[</span><span class="nx">language</span><span class="p">]</span> <span class="o">=</span> <span class="nx">options</span>
+  <span class="nv">stencil: </span><span class="nf">(regex, stencil) -&gt;</span>
+    <span class="nx">@templates</span><span class="p">.</span><span class="nx">push</span> <span class="p">{</span> <span class="nx">regex</span><span class="p">,</span> <span class="nx">stencil</span> <span class="p">}</span>
+  <span class="nv">_find: </span><span class="nf">(from, to, include, exclude) -&gt;</span>
+    <span class="nv">find = </span><span class="nf">(found, from, to, _) -&gt;</span>
+      <span class="nx">found</span> <span class="o">?=</span> <span class="p">[]</span>
+      <span class="nv">stat = </span><span class="nx">fs</span><span class="p">.</span><span class="nx">stat</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">_</span>
+      <span class="k">if</span> <span class="nx">stat</span><span class="p">.</span><span class="nx">isDirectory</span><span class="p">()</span></pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"><p>Gather up the CoffeeScript files and directories in the source directory.</p></td>
+          <td class="code"><div class="highlight"><pre>
+        <span class="nv">files = </span><span class="p">[]</span>
+        <span class="nv">dirs = </span><span class="p">[]</span>
+        <span class="k">for</span> <span class="nx">file</span> <span class="k">in</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readdir</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">_</span>
+          <span class="nv">source = </span><span class="s2">&quot;#{from}/#{file}&quot;</span>
+          <span class="k">if</span> <span class="nx">include</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">source</span><span class="p">)</span> <span class="o">and</span> <span class="o">not</span> <span class="p">(</span><span class="nx">exclude</span> <span class="o">and</span> <span class="nx">exclude</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">source</span><span class="p">))</span>
+            <span class="k">try</span>
+              <span class="k">if</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">stat</span><span class="p">(</span><span class="nx">source</span><span class="p">,</span> <span class="nx">_</span><span class="p">).</span><span class="nx">mtime</span> <span class="o">&gt;</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">stat</span><span class="p">(</span><span class="s2">&quot;#{to}/#{file}&quot;</span><span class="p">,</span> <span class="nx">_</span><span class="p">).</span><span class="nx">mtime</span>
+                <span class="nx">files</span><span class="p">.</span><span class="nx">push</span> <span class="nx">source</span>
+            <span class="k">catch</span> <span class="nx">e</span>
+              <span class="nx">files</span><span class="p">.</span><span class="nx">push</span> <span class="nx">source</span>
+          <span class="k">else</span>
+            <span class="k">try</span>
+              <span class="nv">stat = </span><span class="nx">fs</span><span class="p">.</span><span class="nx">stat</span> <span class="s2">&quot;#{from}/#{file}&quot;</span><span class="p">,</span> <span class="nx">_</span>
+              <span class="k">if</span> <span class="nx">stat</span><span class="p">.</span><span class="nx">isDirectory</span><span class="p">()</span>
+                <span class="nx">dirs</span><span class="p">.</span><span class="nx">push</span> <span class="nx">file</span> <span class="c1"># Create the destination directory if it does not exist.</span>
+            <span class="k">catch</span> <span class="nx">e</span>
+              <span class="nx">console</span><span class="p">.</span><span class="nx">warn</span> <span class="s2">&quot;Cannot stat: #{from}/#{file}&quot;</span>
+              <span class="k">throw</span> <span class="nx">e</span> <span class="k">if</span> <span class="nx">e</span><span class="p">.</span><span class="nx">code</span> <span class="o">isnt</span> <span class="s2">&quot;ENOENT&quot;</span>
+              <span class="nx">console</span><span class="p">.</span><span class="nx">warn</span> <span class="s2">&quot;File disappeared: #{from}/#{file}&quot;</span>
+        <span class="k">if</span> <span class="nx">files</span><span class="p">.</span><span class="nx">length</span>
+          <span class="k">try</span>
+            <span class="nx">fs</span><span class="p">.</span><span class="nx">stat</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">_</span>
+          <span class="k">catch</span> <span class="nx">e</span>
+            <span class="nv">path = </span><span class="nx">to</span><span class="p">.</span><span class="nx">split</span> <span class="sr">/\//</span>
+            <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">..</span><span class="nx">path</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span>
+              <span class="k">try</span>
+                <span class="nx">fs</span><span class="p">.</span><span class="nx">mkdir</span> <span class="nx">path</span><span class="p">[</span><span class="mi">0</span><span class="p">..</span><span class="nx">i</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">),</span> <span class="nb">parseInt</span><span class="p">(</span><span class="mi">755</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="nx">_</span>
+              <span class="k">catch</span> <span class="nx">e</span>
+                <span class="k">throw</span> <span class="nx">e</span> <span class="k">if</span> <span class="nx">e</span><span class="p">.</span><span class="nx">code</span> <span class="o">isnt</span> <span class="s2">&quot;EEXIST&quot;</span>
+          <span class="k">for</span> <span class="nx">file</span> <span class="k">in</span> <span class="nx">files</span>
+            <span class="nv">base = </span><span class="sr">/^.*\/(.*)\.[^.]+/</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">file</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="nx">found</span><span class="p">.</span><span class="nx">push</span> <span class="p">[</span> <span class="nx">file</span><span class="p">,</span> <span class="s2">&quot;#{to}/#{base}.html&quot;</span> <span class="p">]</span>
+
+        <span class="k">for</span> <span class="nx">dir</span> <span class="k">in</span> <span class="nx">dirs</span>
+          <span class="k">continue</span> <span class="k">if</span> <span class="sr">/^\./</span><span class="p">.</span><span class="nx">test</span> <span class="nx">dir</span>
+          <span class="nx">find</span> <span class="nx">found</span><span class="p">,</span> <span class="s2">&quot;#{from}/#{dir}&quot;</span><span class="p">,</span>  <span class="s2">&quot;#{to}/#{dir}&quot;</span><span class="p">,</span> <span class="nx">_</span>
+      <span class="k">else</span>
+        <span class="nx">found</span><span class="p">.</span><span class="nx">push</span> <span class="p">[</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span> <span class="p">]</span>
+      <span class="nx">found</span>
+    <span class="nf">(_) -&gt;</span> <span class="nx">find</span><span class="p">([],</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span><span class="nx">_</span><span class="p">)</span>
+</pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"><p>Format a source file converting it into an HTML page. </p></td>
+          <td class="code"><div class="highlight"><pre>
+  <span class="nv">_format: </span><span class="nf">(language, from, to, _) -&gt;</span>
+    <span class="nv">lines = </span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="s2">&quot;utf8&quot;</span><span class="p">,</span> <span class="nx">_</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="sr">/\n/</span><span class="p">)</span></pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"><p>In the case of a markdown file, the lines are the docco.</p></td>
+          <td class="code"><div class="highlight"><pre>
+    <span class="k">if</span> <span class="nx">language</span> <span class="o">is</span> <span class="s2">&quot;markdown&quot;</span>
+      <span class="nv">page = </span><span class="p">[{</span> <span class="nv">docco: </span><span class="nx">lines</span> <span class="p">}]</span></pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"><p>Otherwise, we extract docco from a source file. We create maps that
+assocate chunk of docco with lines of code.</p></td>
+          <td class="code"><div class="highlight"><pre>
+    <span class="k">else</span>
+      <span class="nv">page = </span><span class="p">[{</span> <span class="nv">docco: </span><span class="p">[]</span> <span class="p">}]</span>
+      <span class="nv">language = </span><span class="nx">@languages</span><span class="p">[</span><span class="nx">language</span><span class="p">]</span>
+      <span class="k">for</span> <span class="nx">line</span> <span class="k">in</span> <span class="nx">lines</span>
+        <span class="k">if</span> <span class="nv">match = </span><span class="nx">language</span><span class="p">.</span><span class="nx">docco</span><span class="p">.</span><span class="nx">exec</span> <span class="nx">line</span>
+          <span class="nx">page</span><span class="p">.</span><span class="nx">unshift</span> <span class="p">{</span> <span class="nv">docco: </span><span class="p">[]</span> <span class="p">}</span> <span class="k">if</span> <span class="nx">page</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">source</span>
+          <span class="nx">page</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">docco</span><span class="p">.</span><span class="nx">push</span> <span class="nx">match</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span>
+          <span class="nx">page</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nv">source = </span><span class="p">[]</span> <span class="nx">unless</span> <span class="nx">page</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">source</span>
+          <span class="nx">page</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">source</span><span class="p">.</span><span class="nx">push</span> <span class="nx">line</span>
+      <span class="nx">page</span><span class="p">.</span><span class="nx">reverse</span><span class="p">()</span></pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"><p>Format the markdown.</p></td>
+          <td class="code"><div class="highlight"><pre>
+    <span class="k">for</span> <span class="nx">section</span> <span class="k">in</span> <span class="nx">page</span>
+      <span class="k">if</span> <span class="nx">section</span><span class="p">.</span><span class="nx">docco</span>
+        <span class="nv">section.docco = </span><span class="nx">showdown</span><span class="p">.</span><span class="nx">makeHtml</span><span class="p">(</span><span class="nx">section</span><span class="p">.</span><span class="nx">docco</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">&quot;\n&quot;</span><span class="p">))</span></pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"><p>If we are program source, format the source code. We clump it together so
+we only have to run pygmentize once, and so that pygmentize has all the
+context it needs to color the code.</p></td>
+          <td class="code"><div class="highlight"><pre>
+    <span class="k">if</span> <span class="nx">language</span><span class="p">.</span><span class="nx">lexer</span>
+      <span class="nv">sources = </span><span class="p">[]</span>
+      <span class="k">for</span> <span class="nx">section</span> <span class="k">in</span> <span class="nx">page</span>
+        <span class="nx">sources</span><span class="p">.</span><span class="nx">push</span> <span class="nx">section</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">&quot;\n&quot;</span><span class="p">)</span> <span class="o">or</span> <span class="s2">&quot;&quot;</span>
+      <span class="nv">source = </span><span class="nx">sources</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">&quot;#{language.divider}\n&quot;</span><span class="p">)</span>
+      <span class="nv">pygmentized = </span><span class="nx">pygmentize</span><span class="p">(</span><span class="nx">language</span><span class="p">.</span><span class="nx">lexer</span><span class="p">,</span> <span class="nx">source</span><span class="p">,</span> <span class="nx">_</span><span class="p">)</span>
+      <span class="nv">divider = </span><span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s2">&quot;&lt;span[^&gt;]+&gt;#{language.divider}&lt;/span&gt;&quot;</span><span class="p">)</span>
+      <span class="k">for</span> <span class="nx">source</span><span class="p">,</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">pygmentized</span><span class="p">.</span><span class="nx">split</span> <span class="nx">divider</span>
+        <span class="nx">page</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nv">source = </span><span class="nx">source</span></pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"><p>Match a template to format the file.</p></td>
+          <td class="code"><div class="highlight"><pre>
+    <span class="k">for</span> <span class="nx">template</span> <span class="k">in</span> <span class="nx">@templates</span>
+      <span class="k">if</span> <span class="nx">template</span><span class="p">.</span><span class="nx">regex</span><span class="p">.</span><span class="nx">test</span> <span class="nx">from</span>
+        <span class="nv">stencil = </span><span class="nx">template</span><span class="p">.</span><span class="nx">stencil</span>
+        <span class="k">break</span>
+    <span class="nv">file = </span><span class="sr">/^.*\/(.*)$/</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">from</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="nv">output = </span><span class="nx">engine</span><span class="p">.</span><span class="nx">execute</span> <span class="nx">stencil</span><span class="p">,</span> <span class="p">{</span> <span class="nx">page</span><span class="p">,</span> <span class="nx">file</span> <span class="p">},</span> <span class="nx">_</span>
+    <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">output</span><span class="p">,</span> <span class="s2">&quot;utf8&quot;</span><span class="p">,</span> <span class="nx">_</span>
+</pre></div></td>
+        </tr>
+      
+        <tr>
+          <td class="docs"><p>Convert to HTML all documents that have changed.</p></td>
+          <td class="code"><div class="highlight"><pre>
+  <span class="nv">_edify: </span><span class="nf">(_) -&gt;</span>
+    <span class="nv">sources = </span><span class="p">[]</span>
+    <span class="k">for</span> <span class="nx">content</span> <span class="k">in</span> <span class="nx">@contents</span>
+      <span class="nv">count = </span><span class="mi">0</span>
+      <span class="nx">count</span><span class="o">++</span> <span class="k">while</span> <span class="k">typeof</span> <span class="nx">content</span><span class="p">[</span><span class="nx">count</span><span class="p">]</span> <span class="o">is</span> <span class="s2">&quot;string&quot;</span>
+      <span class="k">if</span> <span class="nx">count</span> <span class="o">is</span> <span class="mi">2</span>
+        <span class="p">[</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">include</span><span class="p">,</span> <span class="nx">exclude</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">content</span>
+        <span class="nv">language = </span><span class="s2">&quot;markdown&quot;</span>
+      <span class="k">else</span>
+        <span class="p">[</span> <span class="nx">language</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">include</span><span class="p">,</span> <span class="nx">exclude</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">content</span>
+      <span class="k">for</span> <span class="nx">batch</span> <span class="k">in</span> <span class="nx">@_find</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">include</span><span class="p">,</span> <span class="nx">exclude</span><span class="p">)(</span><span class="nx">_</span><span class="p">)</span>
+        <span class="p">[</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">batch</span>
+        <span class="nx">sources</span><span class="p">.</span><span class="nx">push</span> <span class="nx">from</span>
+        <span class="nx">@_format</span><span class="p">(</span><span class="nx">language</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">_</span><span class="p">)</span>
+    <span class="nx">sources</span>
+
+  <span class="nv">_serve: </span><span class="nf">(request, response, _) -&gt;</span>
+    <span class="k">try</span>
+      <span class="nx">@_watch</span><span class="p">(</span><span class="nx">_</span><span class="p">)</span> <span class="k">if</span> <span class="nx">@_dirty</span>
+      <span class="nv">path = </span><span class="nx">parse</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">).</span><span class="nx">pathname</span>
+      <span class="nv">file = </span><span class="s2">&quot;#{process.cwd()}#{path}&quot;</span>
+      <span class="nv">mime = </span><span class="nx">@_mime</span><span class="p">[</span><span class="sr">/\.([^.]+)$/</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">file</span><span class="p">)[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">or</span> <span class="s2">&quot;text/plain&quot;</span>
+      <span class="nv">stat = </span><span class="nx">fs</span><span class="p">.</span><span class="nx">stat</span> <span class="nx">file</span><span class="p">,</span> <span class="nx">_</span>
+      <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span> <span class="mi">200</span><span class="p">,</span> <span class="s2">&quot;Content-Type&quot;</span><span class="o">:</span> <span class="nx">mime</span><span class="p">,</span> <span class="s2">&quot;Content-Length&quot;</span><span class="o">:</span> <span class="nx">stat</span><span class="p">.</span><span class="nx">size</span>
+      <span class="nx">response</span><span class="p">.</span><span class="nx">end</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="nx">_</span><span class="p">)</span>
+    <span class="k">catch</span> <span class="nx">e</span>
+      <span class="k">if</span> <span class="nx">e</span><span class="p">.</span><span class="nx">code</span> <span class="o">is</span> <span class="s2">&quot;ENOENT&quot;</span>
+        <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span> <span class="mi">404</span><span class="p">,</span> <span class="s2">&quot;Content-Type&quot;</span><span class="o">:</span> <span class="s2">&quot;text/plain&quot;</span>
+        <span class="nx">response</span><span class="p">.</span><span class="nx">end</span> <span class="s2">&quot;Not found.&quot;</span>
+      <span class="k">else</span>
+        <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span> <span class="mi">500</span><span class="p">,</span> <span class="s2">&quot;Content-Type&quot;</span><span class="o">:</span> <span class="s2">&quot;text/plain&quot;</span>
+        <span class="nx">response</span><span class="p">.</span><span class="nx">end</span> <span class="nx">e</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span>
+  <span class="nv">_watch: </span><span class="nf">(_) -&gt;</span>
+    <span class="vi">@_dirty = </span><span class="kc">false</span>
+    <span class="nv">sources = </span><span class="nx">@_edify</span><span class="p">(</span><span class="nx">_</span><span class="p">)</span>
+    <span class="nv">update = </span><span class="p">(</span><span class="nx">current</span><span class="p">,</span> <span class="nx">previous</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="k">if</span> <span class="nx">current</span><span class="p">.</span><span class="nx">mtime</span><span class="p">.</span><span class="nx">getTime</span><span class="p">()</span> <span class="o">!=</span> <span class="nx">previous</span><span class="p">.</span><span class="nx">mtime</span><span class="p">.</span><span class="nx">getTime</span><span class="p">()</span>
+        <span class="k">for</span> <span class="nx">source</span> <span class="k">in</span> <span class="nx">sources</span>
+          <span class="nx">fs</span><span class="p">.</span><span class="nx">unwatchFile</span> <span class="nx">source</span>
+        <span class="vi">@_dirty = </span><span class="kc">true</span>
+    <span class="k">for</span> <span class="nx">source</span> <span class="k">in</span> <span class="nx">sources</span>
+      <span class="nx">fs</span><span class="p">.</span><span class="nx">watchFile</span> <span class="nx">source</span><span class="p">,</span> <span class="nx">update</span>
+  <span class="nv">_server: </span><span class="o">-&gt;</span>
+      <span class="nv">http = </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">)</span>
+      <span class="vi">@server = </span><span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span> <span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span>
+        <span class="nx">@_serve</span> <span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">,</span> <span class="nf">(error) -&gt;</span> <span class="k">throw</span> <span class="nx">error</span> <span class="k">if</span> <span class="nx">error</span>
+      <span class="nx">@server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">8088</span><span class="p">)</span>
+  <span class="nv">tasks: </span><span class="o">-&gt;</span>
+    <span class="nx">task</span> <span class="s2">&quot;edify&quot;</span><span class="p">,</span> <span class="s2">&quot;Construct web site.&quot;</span><span class="p">,</span> <span class="o">=&gt;</span> <span class="nx">@_edify</span> <span class="nf">(error) -&gt;</span> <span class="k">throw</span> <span class="nx">error</span> <span class="k">if</span> <span class="nx">error</span>
+    <span class="nx">task</span> <span class="s2">&quot;edify:serve&quot;</span><span class="p">,</span> <span class="s2">&quot;Serve web site and watch for changes.&quot;</span><span class="p">,</span> <span class="o">=&gt;</span>
+      <span class="vi">@_dirty = </span><span class="kc">true</span>
+      <span class="nx">@_server</span><span class="p">()</span>
+
+<span class="nv">module.exports = </span><span class="o">-&gt;</span> <span class="k">new</span> <span class="nx">Edify</span>
+</pre></div>
+</pre></div></td>
+        </tr>
+      
+    </tbody>
+  </table>
 </div>
 </body>
 </html>
