@@ -1,14 +1,31 @@
-fs        = require "fs"
-stencil   = require "stencil"
-showdown  = require "./../vendor/showdown"
-parse     = require("url").parse
+# Quick and dirty GitHub documention generation designed to work with
+# `gh-pages`. Docco inspired. Not quite as quick and dirty as Docco.
+#
+# * [Home](/index.html)
 
+# Node.js requirements.
+fs      = require "fs"
+spawn   = require("child_process").spawn
+parse   = require("url").parse
+
+# Stencil is our templating language. Stencil is asynchronous. It does layouts,
+# includes and snippets.
+stencil   = require "stencil"
+# This is GitHub Flavored Markdown Showdown. The original Docco removed the
+# GitHub flavors. We'll follow suit when we figure out why.
+showdown  = require "./../vendor/showdown"
+
+# The Stencil rendering engine needs a resolver to load the unparsed Stencils.
+# We read them from the file system relative to the root of the `gh-pages`
+# project directory.
 engine = new stencil.Engine (resource, compiler, callback) ->
   fs.readFile "#{resource}", "utf8", (error, source) ->
     if error
       callback error
     else
       compiler source, callback
+
+# ### Utilities
 
 # Copy values from one hash into another.
 extend = (to, from) ->
@@ -22,53 +39,37 @@ die = (splat...) ->
   process.exit 1
 say = (splat...) -> console.log.apply null, splat
 
-# Highlights a single chunk of CoffeeScript code, using **Pygments** over stdio,
-# and runs the text of its corresponding comment through **Markdown**, using the
-# **Github-flavored-Markdown** modification of
-# [Showdown.js](http://attacklab.net/showdown/).
+# Highlight a block of code using [Pygments](http://pygments.org/). We call this
+# method to highlight the code blocks for literate programming. We also use it
+# for highlighting the examples in plain old Markdown.
 #
-# We process the entire file in a single call to Pygments by inserting little
-# marker comments between each section and then splitting the result string
-# wherever our markers occur.
+# When formatting for literate programming, we chunk all the code together with
+# dividers just as the origina Docco does. See below.
+pygmentize = (language, code, callback) ->
+  pygments = spawn "pygmentize", ["-l", language, "-f", "html", "-O", "encoding=utf-8"], { customFds: [ -1, -1, 2 ] }
+  output = []
+  pygments.stdout.setEncoding("utf8")
+  pygments.stdout.on "data", (data) -> output.push data
+  pygments.addListener 'exit', (code) -> callback(null, output.join(""))
+  pygments.stdin.write(code)
+  pygments.stdin.end()
+
+# Not in use, yet. It is from my previous project, IDL. It is used to format a
+# block of code when a Pygments lexer cannot be found for it.
+pre = (block) ->
+  indent = parseInt(/^(\s*)/.exec(block[0])[1], 10)
+  block = for line in block
+    line.substring(indent)
+  block = block.join("\n")
+  block = block.replace(/&/g, "&amp").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+  section.html.push("<div class='highlight'><pre>" + block + "</pre></div>")
+  callback()
+
+# We use a Cakefile to initiate a build. The Edify class will define tasks in
+# the Cakefile. The public methods of Edify are used to configure the Cakefile
+# tasks that the Edify class creates.
 
 #
-highlight = (section, block, callback) ->
-  language = block.shift()
-  if language
-    pygments = spawn 'pygmentize', ['-l', language, '-f', 'html', '-O', 'encoding=utf-8']
-    output   = ''
-    pygments.stderr.addListener 'data',  (error)  ->
-      process.stderr.write error if error
-    pygments.stdout.addListener 'data', (result) ->
-      output += result if result
-    pygments.addListener 'exit', ->
-      section.html.push(output)
-      #output = output.replace(highlight_start, '').replace(highlight_end, '')
-      #fragments = output.split language.divider_html
-      #for section, i in sections
-      #j.u  section.code_html = highlight_start + fragments[i] + highlight_end
-      #  section.docs_html = showdown.makeHtml section.docs_text
-      callback()
-    pygments.stdin.write(block.join("\n"))
-    pygments.stdin.end()
-  else if block.length
-    indent = parseInt(/^(\s*)/.exec(block[0])[1], 10)
-    block = for line in block
-      line.substring(indent)
-    block = block.join("\n")
-    block = block.replace(/&/g, "&amp").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-    section.html.push("<div class='highlight'><pre>" + block + "</pre></div>")
-    callback()
-
-# The Twinkie model will work great for this project. Twinkie will ever be of
-# any interest to anyone but myself. Using a Cakefile to initiate a build,
-# however, will be appealing. The problem with Twinkie is that we want people to
-# check out and build immediately, so it must be written in pure CoffeeScript,
-# because too many build dependencies are going to frustrate adoption.
-# Generating an entire web site, that requires something. People already use a
-# command line application do this, they are expecting it. We'll require that
-# you run npm, which they expect, but then run cake. All the configuration goes
-# into the Cakefile.
 class Edify
   constructor: ->
     @contents = []
@@ -85,10 +86,10 @@ class Edify
       txt: "text/plain"
   parse: (options...) -> @contents.push options
   language: (language, options) ->
-    suffixes = options.suffix
-    suffixes = [ suffixes ] if not Array.isArray(suffix)
-    for suffix in suffixes
-      @languages[suffix] = extend { language }, options
+    if typeof options.docco is "string"
+      options.docco = new RegExp "^\\s*#{options.docco}\\s*(.*)"
+      options.divider = "# --- EDIFY DIVIDER ---"
+    @languages[language] = options
   stencil: (regex, stencil) ->
     @templates.push { regex, stencil }
   _find: (from, to, include, exclude) ->
@@ -137,12 +138,17 @@ class Edify
         found.push [ from, to ]
       found
     (_) -> find([], from, to,_)
+
+  # Format a source file converting it into an HTML page. 
   _format: (language, from, to, _) ->
     lines = fs.readFile(from, "utf8", _).split(/\n/)
-    page = [{}]
+    # In the case of a markdown file, the lines are the docco.
     if language is "markdown"
-      page.push { docco: lines }
+      page = [{ docco: lines }]
+    # Otherwise, we extract docco from a source file. We create maps that
+    # assocate chunk of docco with lines of code.
     else
+      page = [{ docco: [] }]
       language = @languages[language]
       for line in lines
         if match = language.docco.exec line
@@ -151,15 +157,33 @@ class Edify
         else
           page[0].source = [] unless page[0].source
           page[0].source.push line
-    page.reverse()
-    page.pop() unless page[page.length - 1].source
+      page.reverse()
+    # Format the markdown.
     for section in page
-      section.docco = showdown.makeHtml(section.docco.join("\n"))
+      if section.docco
+        section.docco = showdown.makeHtml(section.docco.join("\n"))
+    # If we are program source, format the source code. We clump it together so
+    # we only have to run pygmentize once, and so that pygmentize has all the
+    # context it needs to color the code.
+    if language.lexer
+      sources = []
+      for section in page
+        sources.push section.source.join("\n") or ""
+      source = sources.join("#{language.divider}\n")
+      pygmentized = pygmentize(language.lexer, source, _)
+      divider = new RegExp("<span[^>]+>#{language.divider}</span>")
+      for source, i in pygmentized.split divider
+        page[i].source = source
+    # Match a template to format the file.
     for template in @templates
       if template.regex.test from
+        stencil = template.stencil
         break
-    output = engine.execute template.stencil, { page }, _
+    file = /^.*\/(.*)$/.exec(from)[1]
+    output = engine.execute stencil, { page, file }, _
     fs.writeFile to, output, "utf8", _
+
+  # Convert to HTML all documents that have changed.
   _edify: (_) ->
     sources = []
     for content in @contents
@@ -175,6 +199,7 @@ class Edify
         sources.push from
         @_format(language, from, to, _)
     sources
+
   _serve: (request, response, _) ->
     try
       @_watch(_) if @_dirty
