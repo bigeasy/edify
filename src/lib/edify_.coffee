@@ -150,13 +150,34 @@ class Edify
     else
       page = [{ docco: [] }]
       language = @languages[language]
-      for line in lines
-        if match = language.docco.exec line
-          page.unshift { docco: [] } if page[0].source
-          page[0].docco.push match[1]
-        else
-          page[0].source = [] unless page[0].source
-          page[0].source.push line
+      if typeof language.docco is "function"
+        for line in lines
+          if match = language.docco.exec line
+            page.unshift { docco: [] } if page[0].source
+            page[0].docco.push match[1]
+          else
+            page[0].source = [] unless page[0].source
+            page[0].source.push line
+      else
+        for line in lines
+          if docco
+            if match = language.docco.end.exec line
+              if match[1].trim()
+                page[0].docco.push match[1]
+              docco = false
+            else
+              page[0].docco.push line.replace language.docco.strip, ""
+          else if match = language.docco.start.exec line
+            docco = true
+            page.unshift { docco: [] } if page[0].source
+            comment = match[1]
+            if match = language.docco.end.exec comment
+              comment = match[1]
+              docco = false
+            page[0].docco.push comment
+          else
+            page[0].source = [] unless page[0].source
+            page[0].source.push line
       page.reverse()
     # Format the markdown.
     for section in page
@@ -171,7 +192,10 @@ class Edify
         sources.push section.source.join("\n") or ""
       source = sources.join("#{language.divider}\n")
       pygmentized = pygmentize(language.lexer, source, _)
-      divider = new RegExp("<span[^>]+>#{language.divider}</span>")
+      regex = "(#{"/ . * + ? | ( ) [ ] { } \\".split(/\s+/).join("|\\")})"
+      regex = new RegExp regex, "g"
+      divider = language.divider.replace regex, "\\$1"
+      divider = new RegExp("<span[^>]+>#{divider}</span>")
       for source, i in pygmentized.split divider
         page[i].source = source
     # Match a template to format the file.
