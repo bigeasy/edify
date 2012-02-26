@@ -153,7 +153,17 @@ this.makeHtml = function(text) {
 
 	// attacklab: Restore tildes
 	text = text.replace(/~T/g,"~");
-
+  
+  // AJG -> Why? Becase the last example here will match:
+  //
+  //    http://stackoverflow.com/questions/614126/why-is-array-push-sometimes-faster-than-arrayn-value/614255#614255
+  //
+  // This is the last match in the transform, so there is no escaping it. I link
+  // to StackOverflow as often as I link to GitHub, so this is not acceptable.
+  //
+  // If you want to link to GitHub, you'll have to type out your links in your
+  // links to GitHub in Markdown.
+  if (false) {
   // ** GFM **  Auto-link URLs and emails
   text = text.replace(/https?\:\/\/[^"\s\<\>]*[^.,;'">\:\s\<\>\)\]\!]/g, function(wholeMatch,matchIndex){
     var left = text.slice(0, matchIndex), right = text.slice(matchIndex)
@@ -206,6 +216,7 @@ this.makeHtml = function(text) {
   text = text.replace(/([a-z0-9_\-+=.]+\/[a-z0-9_\-+=.]+)#([0-9]+)/ig, function(wholeMatch,repo,issue){
     return "<a href='http://github.com/" + repo + "/issues/#issue/" + issue + "'>" + wholeMatch + "</a>";
   });
+  }
 
 	return text;
 }
