@@ -87,8 +87,10 @@ class Edify
   parse: (options...) -> @contents.push options
   language: (language, options) ->
     if typeof options.docco is "string"
-      options.docco = new RegExp "^\\s*#{options.docco}\\s*(.*)"
-      options.divider = "# --- EDIFY DIVIDER ---"
+      comment = options.docco
+      options.docco = {}
+      options.docco.start = new RegExp "^\\s*#{comment}\\s*(.*)$"
+      options.divider = "#{comment} --- EDIFY DIVIDER ---"
     @languages[language] = options
   stencil: (regex, stencil) ->
     @templates.push { regex, stencil }
@@ -161,17 +163,24 @@ class Edify
       else
         for line in lines
           if docco
-            if match = language.docco.end.exec line
-              if match[1].trim()
-                page[0].docco.push match[1].replace language.docco.strip, ""
-              docco = false
+            if language.docco.end
+              if match = language.docco.end.exec line
+                if match[1].trim()
+                  page[0].docco.push match[1].replace language.docco.strip, ""
+                docco = false
+              else
+                page[0].docco.push line.replace language.docco.strip, ""
+            else if match = language.docco.start.exec line
+              page[0].docco.push match[1]
             else
-              page[0].docco.push line.replace language.docco.strip, ""
+              docco = false
+              page[0].source = [] unless page[0].source
+              page[0].source.push line
           else if match = language.docco.start.exec line
             docco = true
             page.unshift { docco: [] } if page[0].source
             comment = match[1]
-            if match = language.docco.end.exec comment
+            if language.docco.end and match = language.docco.end.exec comment
               comment = match[1]
               docco = false
             page[0].docco.push comment
