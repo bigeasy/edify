@@ -1,9 +1,12 @@
 # Edify
 
-Template driven GitHub documentation publishing.
+Quicky and dirty project documentation in the spirit of
+[Docco](://github.com/jashkenas/docco).
+
+## Overview
 
 Edify is a quick and dirty publishing platform for your gh-pages. It is Docco
-inspired, but not quite as quick and dirty as Docco. Docco.
+inspired, but not quite as quick and dirty as Docco.
 
 This works. This does not always work. Does it work if I wait a beat to serve
 it? Now this doesn't work. It just wants to work.
@@ -42,3 +45,10 @@ an entire web site, that requires something.  People already use a command line
 application do this, they are expecting it.  We'll require that you run npm,
 which they expect, but then run cake. All the configuration goes into the
 Cakefile.
+
+## Requirements
+
+Edify requires **Pygments** to format code blocks. You can install Pygments
+using `easy_install Pygments`. I've had a lot of success pulling pygments from
+the the [Mercurial repository](http://pygments.org/download/) and installing
+using `sudo python setup.py`.
