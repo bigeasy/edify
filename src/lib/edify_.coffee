@@ -130,7 +130,7 @@ class Edify
               catch e
                 throw e if e.code isnt "EEXIST"
           for file in files
-            base = /^.*\/(.*)\.[^.]+/.exec(file)[1]
+            base = /^.*\/(.*)$/.exec(file)[1]
             found.push [ file, "#{to}/#{base}.html" ]
 
         for dir in dirs
