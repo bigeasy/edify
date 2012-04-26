@@ -1,0 +1,18 @@
+{ "name" : "edify"
+, "description" : "Documentation generator for GitHub:Pages."
+, "url" : "http://bigeasy.github.com/edify"
+, "keywords" : ["documentation", "api", "docs", "cms", "website", "github", "pages", "html", "markdown", "docco"]
+, "author" : "Alan Gutierrez <alan@prettyrobots.com>"
+, "contributors" : []
+, "devDependencies": { }
+, "dependencies":
+  { "streamline": ">=0.2.4"
+  , "streamliner_": ">=0.0.1"
+  , "stencil": ">=0.0.1"
+  , "coffee-script": ">=1.1.3"
+  }
+, "lib" : "lib"
+, "main" : "./lib/edify"
+, "version" : "0.0.1"
+, "engines" : { "node": "> 0.6.0" }
+}
