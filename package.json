@@ -14,6 +14,6 @@
 , "lib" : "lib"
 , "main" : "./lib/edify"
 , "version" : "0.0.1"
-, "scripts" : { "test": "proof t/*/*.t" }
+, "scripts" : { "test": "(proof run t/*/*.t | tee .proof.out | proof progress) || (proof errors < .proof.out)" }
 , "engines" : { "node": "> 0.6.0" }
 }

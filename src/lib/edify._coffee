@@ -8,22 +8,9 @@ fs      = require "fs"
 spawn   = require("child_process").spawn
 parse   = require("url").parse
 
-# Stencil is our templating language. Stencil is asynchronous. It does layouts,
-# includes and snippets.
-stencil   = require "stencil"
 # This is GitHub Flavored Markdown Showdown. The original Docco removed the
 # GitHub flavors. We'll follow suit when we figure out why.
 showdown  = require "./../vendor/showdown"
-
-# The Stencil rendering engine needs a resolver to load the unparsed Stencils.
-# We read them from the file system relative to the root of the `gh-pages`
-# project directory.
-engine = new stencil.Engine (resource, compiler, callback) ->
-  fs.readFile "#{resource}", "utf8", (error, source) ->
-    if error
-      callback error
-    else
-      compiler source, callback
 
 # ### Utilities
 
