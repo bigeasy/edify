@@ -23,6 +23,11 @@ $(lib_targets): lib/%.js: src/lib/%._coffee
 	@mv $(basename $<).js $@
 	@touch $@
 
+publish:
+	find . -name .AppleDobule | xargs rm -rf 
+	find . -name .DS_Store | xargs rm -rf 
+	npm publish
+
 clean:
 	rm -rf lib
 
