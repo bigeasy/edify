@@ -1,7 +1,7 @@
 # Quick and dirty GitHub documention generation designed to work with
 # `gh-pages`. Docco inspired. Not quite as quick and dirty as Docco.
 #
-# * [Home](/edify/index.html)
+# * [Home](edify/index.html)
 
 # Node.js requirements.
 fs      = require "fs"
@@ -72,74 +72,16 @@ pre = (block) ->
 #
 class Edify
   constructor: ->
-    @contents = []
-    @languages = {}
-    @templates = []
-    @_mime =
-      jpg: "image/jpg"
-      jpeg: "image/jpg"
-      png: "image/png"
-      gif: "image/gif"
-      js: "application/javascript"
-      html: "text/html"
-      css: "text/css"
-      txt: "text/plain"
-  parse: (options...) -> @contents.push options
-  language: (language, options) ->
+    @lexers = {}
+
+  language: (options) ->
+    options = extend {}, options
     if typeof options.docco is "string"
       comment = options.docco
       options.docco = {}
       options.docco.start = new RegExp "^\\s*#{comment}\\s*(.*)$"
       options.divider = "#{comment} --- EDIFY DIVIDER ---"
-    @languages[language] = options
-  stencil: (regex, stencil) ->
-    @templates.push { regex, stencil }
-  _find: (from, to, include, exclude) ->
-    find = (found, from, to, _) ->
-      found ?= []
-      stat = fs.stat from, _
-      if stat.isDirectory()
-        # Gather up the CoffeeScript files and directories in the source directory.
-        files = []
-        dirs = []
-        for file in fs.readdir from, _
-          source = "#{from}/#{file}"
-          if include.test(source) and not (exclude and exclude.test(source))
-            try
-              if fs.stat(source, _).mtime > fs.stat("#{to}/#{file}", _).mtime
-                files.push source
-            catch e
-              files.push source
-          else
-            try
-              stat = fs.stat "#{from}/#{file}", _
-              if stat.isDirectory()
-                dirs.push file # Create the destination directory if it does not exist.
-            catch e
-              console.warn "Cannot stat: #{from}/#{file}"
-              throw e if e.code isnt "ENOENT"
-              console.warn "File disappeared: #{from}/#{file}"
-        if files.length
-          try
-            fs.stat to, _
-          catch e
-            path = to.split /\//
-            for i in [0..path.length]
-              try
-                fs.mkdir path[0..i].join("/"), parseInt(755, 8), _
-              catch e
-                throw e if e.code isnt "EEXIST"
-          for file in files
-            base = /^.*\/(.*)$/.exec(file)[1]
-            found.push [ file, "#{to}/#{base}.html" ]
-
-        for dir in dirs
-          continue if /^\./.test dir
-          find found, "#{from}/#{dir}",  "#{to}/#{dir}", _
-      else
-        found.push [ from, to ]
-      found
-    (_) -> find([], from, to,_)
+    @lexers[options.lexer] = extend @lexers[options.lexer] or {}, options
 
   # ### Highlight
 
@@ -173,7 +115,7 @@ class Edify
   # example is fed to Pygments.
 
   #
-  _markdown: (lines, _) ->
+  markdown: (lines, _) ->
     page = []
     markdown = []
     indexes = {}
@@ -232,8 +174,8 @@ class Edify
         # we can do a mass highlight, combining all the code with a divider,
         # then spliting the results. If not, we hightlight the snippets one at
         # time.
-        if @languages[language]
-          sources = @_highlight @languages[language], sources, _
+        if @lexers[language]
+          sources = @_highlight @lexers[language], sources, _
         else
           sources = for source, i in sources
             @_highlight({ lexer: language, divider: "" }, [ source ], _).pop()
@@ -247,8 +189,8 @@ class Edify
     page
 
   # Format a source file converting it into an HTML page. 
-  _format: (language, from, to, _) ->
-    lines = fs.readFile(from, "utf8", _).split(/\n/)
+  docco: (language, source, _) ->
+    lines = source.split(/\n/)
     # In the case of a markdown file, the lines are the docco.
     if language is "markdown"
       page = @_markdown(lines, _)
@@ -256,7 +198,7 @@ class Edify
     # assocate chunk of docco with lines of code.
     else
       page = [{ docco: [] }]
-      language = @languages[language]
+      language = @lexers[language]
       if typeof language.docco is "function"
         for line in lines
           if match = language.docco.exec line
@@ -306,67 +248,6 @@ class Edify
           sources.push section.source.join("\n") or ""
         for source, i in @_highlight language, sources, _
           page[i].source = source
-    # Match a template to format the file.
-    for template in @templates
-      if template.regex.test from
-        stencil = template.stencil
-        break
-    file = /^.*\/(.*)$/.exec(from)[1]
-    output = engine.execute stencil, { page, file }, _
-    fs.writeFile to, output, "utf8", _
+    page
 
-  # Convert to HTML all documents that have changed.
-  _edify: (_) ->
-    sources = []
-    for content in @contents
-      count = 0
-      count++ while typeof content[count] is "string"
-      if count is 2
-        [ from, to, include, exclude ] = content
-        language = "markdown"
-      else
-        [ language, from, to, include, exclude ] = content
-      for batch in @_find(from, to, include, exclude)(_)
-        [ from, to ] = batch
-        sources.push from
-        @_format(language, from, to, _)
-    sources
-
-  _serve: (request, response, _) ->
-    try
-      @_watch(_) if @_dirty
-      path = parse(request.url).pathname.replace(/\/[^/]+/, '')
-      file = "#{process.cwd()}#{path}"
-      mime = @_mime[/\.([^.]+)$/.exec(file)[1]] or "text/plain"
-      stat = fs.stat file, _
-      response.writeHead 200, "Content-Type": mime, "Content-Length": stat.size
-      response.end fs.readFile(file, _)
-    catch e
-      if e.code is "ENOENT"
-        response.writeHead 404, "Content-Type": "text/plain"
-        response.end "Not found."
-      else
-        response.writeHead 500, "Content-Type": "text/plain"
-        response.end e.toString()
-  _watch: (_) ->
-    @_dirty = false
-    sources = @_edify(_)
-    update = (current, previous) =>
-      if current.mtime.getTime() != previous.mtime.getTime()
-        for source in sources
-          fs.unwatchFile source
-        @_dirty = true
-    for source in sources
-      fs.watchFile source, update
-  _server: ->
-      http = require('http')
-      @server = http.createServer (request, response) =>
-        @_serve request, response, (error) -> throw error if error
-      @server.listen(8088)
-  tasks: ->
-    task "edify", "Construct web site.", => @_edify (error) -> throw error if error
-    task "edify:serve", "Serve web site and watch for changes.", =>
-      @_dirty = true
-      @_server()
-
-module.exports = -> new Edify
+module.exports.create = -> new Edify

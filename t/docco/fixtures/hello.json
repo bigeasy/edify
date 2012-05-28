@@ -1,0 +1,10 @@
+[
+  {
+    "docco": "<p>!/usr/bin/env coffee</p>",
+    "source": ""
+  },
+  {
+    "docco": "<p>Say hello to the world.</p>",
+    "source": "\n<span class=\"nx\">console</span><span class=\"p\">.</span><span class=\"nx\">log</span> <span class=\"s\">&quot;Hello, World!&quot;</span>\n\n"
+  }
+]
