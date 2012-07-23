@@ -52,3 +52,30 @@ Edify requires **Pygments** to format code blocks. You can install Pygments
 using `easy_install Pygments`. I've had a lot of success pulling pygments from
 the the [Mercurial repository](http://pygments.org/download/) and installing
 using `sudo python setup.py`.
+
+## Change Log
+
+Changes for each release.
+
+### Version 0.0.3
+
+Released: Mon Jul 23 11:08:56 UTC 2012
+
+ * Convert to JavaScript. #8. #7.
+
+### Version 0.0.2
+
+Released: Mon May 28 19:21:54 2012 -0400
+
+ * Remove Stencil. #6.
+ * Convert Stencil into supporting library. #3.
+ * Build on Travis CI.
+ * Created `Makefile`.
+
+### Version 0.0.1
+
+Released:  Wed Apr 25 23:09:19 2012 -0400
+
+ * Markdown documentation with code snippets.
+ * Remove GFM from Showdown.
+ * Generate an array of objects that model Docco.
