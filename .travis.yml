@@ -14,5 +14,4 @@ branches:
 
 before_install:
   - sudo easy_install Pygments
-  - npm install coffee-script proof streamline
-  - make
+  - npm install
