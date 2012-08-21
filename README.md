@@ -5,8 +5,8 @@ Quicky and dirty project documentation in the spirit of
 
 ## Overview
 
-Edify is a quick and dirty publishing platform for your gh-pages. It is Docco
-inspired, but not quite as quick and dirty as Docco.
+Edify is a quick and dirty publishing platform for your GitHub:Pages. It is
+Docco inspired, but not quite as quick and dirty as Docco.
 
 This works. This does not always work. Does it work if I wait a beat to serve
 it? Now this doesn't work. It just wants to work.
@@ -36,15 +36,6 @@ Added timeout. Hello?
    files in GitHub, they will be relative to GitHub. I'd like to be able to have
    those rewritten when served locally, stripping the prefix so it will navigate
    correctly.
-
-Using Cakefile as the interface to Edify. Got this idea from my own batch of
-Cakefile utilities, Twinkie. The problem with Twinkie is that we want people to
-check out and build immediately, so it must be written in pure CoffeeScript,
-because too many build dependencies are going to frustrate adoption.  Generating
-an entire web site, that requires something.  People already use a command line
-application do this, they are expecting it.  We'll require that you run npm,
-which they expect, but then run cake. All the configuration goes into the
-Cakefile.
 
 ## Requirements
 
