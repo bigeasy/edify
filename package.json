@@ -6,7 +6,7 @@
 , "author" : "Alan Gutierrez <alan@prettyrobots.com>"
 , "contributors" : []
 , "devDependencies":
-  { "proof": ">=0.0.15"
+  { "proof": "0.0.15"
   }
 , "dependencies": { }
 , "lib" : "lib"
