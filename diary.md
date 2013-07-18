@@ -29,3 +29,27 @@ section.yaml(0).markdown('arguments').buffer
 
 And we can use inquiry to fetch specific bits and pieces from both yaml and
 markdown.
+
+## HTML
+
+I'm considering using Inquiry to create a path language to for an HTML tree that
+would be the output of `htmlpaser2`. This would allow you to select ranges, or
+to order or chunk the documentation into bits and pieces.
+
+## Pygments
+
+It would be nice to have intermediate files for pygments, to cache the output
+and to only regenerate it if the output changes. Slower than the strategy, but
+probably much simpiler. It would be a restart.
+
+What does `htmlparser2` output look like?
+
+## How To Procede
+
+Hard to say which project matters most. Packet would let you see how well you
+work when you can write your documentation as you write your code. (Locket is
+already API documented.) Strata is important because people are paying attention
+to it. Stencil itself needs to evolve.
+
+However, there is nothing to document here, yet. Thus, if you do want to do
+something meaningful, start with *any* other project.

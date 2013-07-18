@@ -1,5 +1,4 @@
-# Edify
-{:foo=bar}
+h1. Edify
 
 Edify is my work in progress documentation generator that adheres to the
 idiosyncrasies of my workflow; documentation first, documentation driven
@@ -31,3 +30,5 @@ Edify documentation is supposed to look nice when viewed at GitHub, but it can a
 be formatted specially. There is a format that you can use to define the bits and
 pieces of your program. It has JavaScript in mind, but you can define your own parsers
 for the information.
+
+h2. Something Else
