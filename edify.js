@@ -34,7 +34,7 @@ exports.generate = cadence(function (step, argv) {
     var destination = path.resolve(process.cwd(), argv.shift())
 
     // horrible location for a temporary file, but...
-    var cache = path.join(path.dirname(destination), '.' + path.basename(destination) + '.~edify')
+    var storage = path.join(path.dirname(destination), '.' + path.basename(destination) + '.~edify')
 
     step(function () {
         mkdirp(path.dirname(destination), step())
@@ -54,7 +54,7 @@ exports.generate = cadence(function (step, argv) {
         step()(null, require(module))
         fs.readFile(source, 'utf8', step())
         step([function () {
-            fs.readFile(cache, 'utf8', step())
+            fs.readFile(storage, 'utf8', step())
         }, /^ENOENT$/, function () {
             return '{}'
         }], function (body) {
@@ -62,8 +62,12 @@ exports.generate = cadence(function (step, argv) {
         })
     }, function (edify, body, cache) {
         var $ = cheerio.load(body)    
-        edify($)
-        console.log($.html())
+        step(function () {
+            edify($, cache, step())
+        }, function () {
+            fs.writeFile(destination, $.html(), 'utf8', step())
+            fs.writeFile(storage, JSON.stringify(cache, null, 2),  'utf8', step())
+        })
     })
 })
 
