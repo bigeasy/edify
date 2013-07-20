@@ -1,5 +1,7 @@
 var cadence = require('cadence')
 
+//Error.stackTraceLimit = Infinity
+
 function htmlify (rawHtml) {
     var htmlparser = require("htmlparser2");
     var handler = new htmlparser.DefaultHandler(function (error, dom) {
@@ -34,7 +36,7 @@ exports.generate = cadence(function (step, argv) {
     var destination = path.resolve(process.cwd(), argv.shift())
 
     // horrible location for a temporary file, but...
-    var storage = path.join(path.dirname(destination), '.' + path.basename(destination) + '.~edify')
+    var storage = path.join(path.dirname(destination), '.' + path.basename(destination) + '.edify~')
 
     step(function () {
         mkdirp(path.dirname(destination), step())

@@ -53,3 +53,10 @@ to it. Stencil itself needs to evolve.
 
 However, there is nothing to document here, yet. Thus, if you do want to do
 something meaningful, start with *any* other project.
+
+## Clearing Cache
+
+The cache is going to get dirty and full. It's keyed on code, so it doesn't
+replace itself, so eventually you're going to have a great big bundle of stuff
+you cannot use. How do you purge the cache? Remove entries that are very old?
+Time stamp each entry? Yes, because that's what a cache is, isn't it?
