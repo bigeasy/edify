@@ -50,6 +50,8 @@ Changes for each release.
 
 ### Version 0.0.4
 
+Sun Jul 21 03:24:26 UTC 2013
+
  * Implement Pygments rewriting. #21.
  * Implemnet Markdown rewriting. #20.
  * Implement cache for complicated transforms like Pygments. #19.
