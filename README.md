@@ -48,6 +48,13 @@ using `sudo python setup.py`.
 
 Changes for each release.
 
+### Version 0.0.4
+
+ * Implement Pygments rewriting. #21.
+ * Implemnet Markdown rewriting. #20.
+ * Implement cache for complicated transforms like Pygments. #19.
+ * Change design to rewrite plain HTML. #18.
+
 ### Version 0.0.3
 
 Released: Mon Jul 23 11:08:56 UTC 2012
@@ -61,7 +68,7 @@ Released: Mon May 28 19:21:54 2012 -0400
  * Remove Stencil. #6.
  * Convert Stencil into supporting library. #3.
  * Build on Travis CI.
- * Created `Makefile`.
+ t * Created `Makefile`.
 
 ### Version 0.0.1
 
