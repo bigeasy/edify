@@ -46,7 +46,7 @@ exports.generate = cadence(function (step, argv) {
                 fs.stat(path.join(destination, 'edify.js'), step())
             }, function () {
                 var parent = path.dirname(destination)
-                if (parent == destination) throw new Error('cannot find edify.js')
+                if (parent == destination) throw new Error('cannot find project\'s edify.js')
                 return step(edify) && parent
             }], function () {
                 return path.join(destination, 'edify.js')
