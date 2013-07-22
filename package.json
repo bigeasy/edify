@@ -2,8 +2,8 @@
     "name":             "package",
     "version":          "0.0.1",
     "author":           "Alan Gutierrez",
-    "url" :             "http://bigeasy.github.com/timezone",
-    "keywords" :        ["time", "timezone", "date"],
+    "url" :             "http://bigeasy.github.io/packet",
+    "keywords" :        [],
     "author" :          "Alan Gutierrez <alan@prettyrobots.com>",
     "contributors" :    [],
     "dependencies":
