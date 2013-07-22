@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<title>Edify</title>
+<!--
+<link href='http://fonts.googleapis.com/css?family=Parisienne|Oxygen+Mono|PT+Mono|Offside|Nova+Mono|Averia+Serif+Libre|Alex+Brush|Autour+One|Share+Tech+Mono|Merriweather|Maven+Pro|Raleway' rel='stylesheet' type='text/css'>
+-->
+<!-- todo: why doesn't fork me float? -->
+<!--
+<link href="http://fonts.googleapis.com/css?family=ABeeZee|Nunito|Inconsolata|Podkova:400,700|Artbus+Slab|Della+Respira|Cutive+Mono|Sorts+Mill+Goudy|Karla:400,700|Cardo:400,700|Oxygen+Mono|Raleway:400,700" rel="stylesheet" type="text/css">
+-->
+<link href="http://fonts.googleapis.com/css?family=ABeeZee|Inconsolata|Karla:400,700|Oxygen+Mono" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy">
+<link rel="stylesheet" type="text/css" href="css/syntax.css">
+<link rel="stylesheet" type="text/css" href="css/edify.css">
+<body><a href="https://github.com/bigeasy/edify/"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_gray_6d6d6d.png" alt="Fork me on GitHub"></a><div class="container">
+
+<div class="unit welcome">
+<h1>Edify</h1>
+</div>
+<!-- todo: code font is too small for body text font -->
+<div class="unit description markdown">
+Quicky and dirty project documentation in the spirit of
+[Docco](://github.com/jashkenas/docco).
+
+## Overview
+
+Edify is a quick and dirty publishing platform for your GitHub:Pages. It is
+Docco inspired, but not quite as quick and dirty as Docco.
+
+This works. This does not always work. Does it work if I wait a beat to serve
+it? Now this doesn't work. It just wants to work.
+
+Why won't this work? Guess it needs a beat. Waiting that half a second does it.
+I don't like the aribtrary wait. Can I detect a real change?
+
+Okay. Mark as dirty. There ought to be enough time between the write and the
+reload to trigger a rebuild. That did it. No more problems! Yeah! So now I have
+to style these. Let's try to style the Docco.
+
+Added timeout. Hello?
+
+ * <a href="/edify/src/lib/edify_.html">edify\_.html</a>
+
+## Concerns and Decisions
+
+ * Wondering if I want to implement globs.
+ * Probably want to feed a file name to a template so that the file name is
+   relative to the root of the project, or the directory where it was told to
+   search.
+ * Patterns should match relative to the project root.
+ * Name collisions are a problem in C. A `.h` file and a `.c` file may share the
+   same names.
+ * Base is annoying. We probably base off of a project subdirectory most of the
+   time as in `/edify`, but this is going to be goofy when people view Markdown
+   files in GitHub, they will be relative to GitHub. I'd like to be able to have
+   those rewritten when served locally, stripping the prefix so it will navigate
+   correctly.
+
+## Requirements
+
+Edify requires **Pygments** to format code blocks. You can install Pygments
+using `easy_install Pygments`. I've had a lot of success pulling pygments from
+the the [Mercurial repository](http://pygments.org/download/) and installing
+using `sudo python setup.py`.
+
+## Change Log
+
+Changes for each release.
+
+### Version 0.0.4
+
+Sun Jul 21 03:24:26 UTC 2013
+
+ * Implement Pygments rewriting. #21.
+ * Implemnet Markdown rewriting. #20.
+ * Implement cache for complicated transforms like Pygments. #19.
+ * Change design to rewrite plain HTML. #18.
+
+### Version 0.0.3
+
+Released: Mon Jul 23 11:08:56 UTC 2012
+
+ * Convert to JavaScript. #8. #7.
+
+### Version 0.0.2
+
+Released: Mon May 28 19:21:54 2012 -0400
+
+ * Remove Stencil. #6.
+ * Convert Stencil into supporting library. #3.
+ * Build on Travis CI.
+ t * Created `Makefile`.
+
+### Version 0.0.1
+
+Released:  Wed Apr 25 23:09:19 2012 -0400
+
+ * Markdown documentation with code snippets.
+ * Remove GFM from Showdown.
+ * Generate an array of objects that model Docco.
+</div>
+
+</div></body>
+<!-- todo: move into an edify plugin -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-20388260-3', 'bigeasy.github.io');
+ga('send', 'pageview');
+</script>
+</html>
