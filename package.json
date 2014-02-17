@@ -11,7 +11,7 @@
     "contributors" : [],
     "devDependencies":
     {
-        "proof": "0.0.32"
+        "proof": "0.0.42"
     },
     "dependencies":
     {
