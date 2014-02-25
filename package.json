@@ -2,7 +2,7 @@
     "name" : "edify",
     "description" : "Documentation generator for GitHub:Pages.",
     "version": "0.0.4",
-    "url" : "http://bigeasy.github.com/edify",
+    "homepage" : "http://bigeasy.github.com/edify",
     "keywords" : [
       "documentation", "api", "docs", "cms", "website",
       "github", "pages", "html", "markdown", "docco"
