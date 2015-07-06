@@ -16,6 +16,7 @@
     },
     "dependencies":
     {
+                        "marked": "0.3.3",
                         "arguable": "0.0.23",
                         "cadence": "0.0.56",
                         "cheerio": "0.12.0",
