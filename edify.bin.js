@@ -19,17 +19,6 @@
 
 */
 
-function run (argv, stdin, stdout, stderr, callback) {
-    var arguable = require('arguable')
-    var runner = require('./edify').runner
-    var vargs = [].slice.call(arguments, 1)
-    arguable.parse(__filename, argv, function (options) {
-        runner(options, stdin, stdout, stderr, callback || options.fatal)
-    })
-}
-
-if (module === require.main) {
-    run(process.argv.slice(2), process.stdin, process.stdout, process.stderr)
-} else {
-    module.exports = run
-}
+require('arguable')(module, function (options, callback) {
+    require('./edify').runner(options, options.stdin, options.stdout, options.stderr, callback)
+})
