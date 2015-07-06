@@ -32,13 +32,13 @@ exports.pygments = cadence(function (step, $, selector, language, cache) {
 
                 code = code.map(function (line) { return line.substring(indent) })
 
-                pygments = spawn('pygmentize', [
+                var pygments = spawn('pygmentize', [
                     '-l', language, '-f', 'html', '-O', 'encoding=utf-8'
                 ], {
                     customFds: [ -1, -1, 2 ]
                 })
-                pygments.stdout.on('data', step(-1, []))
-                pygments.on('close', step(-1))
+                pygments.stdout.on('data', step(null, []))
+                pygments.on('close', step(null))
 
                 pygments.stdin.setEncoding('utf8')
                 pygments.stdin.write(code.join('\n'))
