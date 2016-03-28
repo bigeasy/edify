@@ -1,7 +1,7 @@
 {
-    "name":             "edify",
-    "description":      "Documentation generator for GitHub:Pages.",
-    "version":          "0.0.5",
+    "name":             "edify.markdown",
+    "description":      "Markdown generator for static JavaScript.",
+    "version":          "9.9.9",
     "homepage":         "http://bigeasy.github.com/edify",
     "keywords":
     [
@@ -10,24 +10,26 @@
     ],
     "author":           "Alan Gutierrez <alan@prettyrobots.com>",
     "contributors":     [],
-    "license":          "MIT",
     "devDependencies":
     {
                         "proof": "1.x"
     },
     "dependencies":
     {
+                        "marked": "0.3.3",
                         "arguable": "1.x",
                         "cadence": "1.x",
-                        "cheerio": "0.12.0",
                         "delta": "1.x",
-                        "highlight.js": "9.2.0",
-                        "marked": "0.3.3"
+                        "cheerio": "0.12.0"
     },
     "repository":
     {
                         "type": "git",
                         "url": "http://github.com/bigeasy/edify.git"
+    },
+    "bin":
+    {
+                        "edify-markdown": "markdown.bin.js"
     },
     "scripts":
     {
