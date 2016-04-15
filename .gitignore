@@ -1,6 +1,5 @@
-.DS_Store
-.AppleDouble
-node_modules/*
-*.swp
-.proof.out
+/node_modules/*
+/*/node_modules/*
+!/edify.root/node_modules/edify.test.js
 /coverage
+/.proof.out

@@ -1,0 +1,37 @@
+{
+    "name":             "edify",
+    "version":          "0.0.6",
+    "author":           "Alan Gutierrez <alan@prettyrobots.com>",
+    "description":      "Root executable for Edify html transformers.",
+    "keywords":
+    [
+                        "logging", "log", "syslog"
+    ],
+    "license":          "MIT",
+    "contributors":     [],
+    "homepage":         "https://github.com/bigeasy/prolific",
+    "bugs":             "https://github.com/bigeasy/prolific/issues",
+    "main":             "supervisor",
+    "repository":
+    {
+                        "type": "git",
+                        "url": "http://github.com/bigeasy/prolific.git"
+    },
+    "bin":
+    {
+                        "prolific":             "./edify.bin.js"
+    },
+    "dependencies":
+    {
+                        "arguable":             "2.x",
+                        "cadence":              "1.x"
+    },
+    "devDependencies":
+    {
+                        "proof":                "1.x"
+    },
+    "scripts":
+    {
+                        "test": "proof test t/*.t.js"
+    }
+}
