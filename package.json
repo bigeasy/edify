@@ -17,12 +17,6 @@
     },
     "dependencies":
     {
-                        "arguable": "1.x",
-                        "cadence": "1.x",
-                        "cheerio": "0.12.0",
-                        "delta": "1.x",
-                        "highlight.js": "9.2.0",
-                        "marked": "0.3.3"
     },
     "repository":
     {
