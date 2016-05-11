@@ -1,1 +1,1 @@
-Edify Markdown
+Markdown generator for static JavaScript.
