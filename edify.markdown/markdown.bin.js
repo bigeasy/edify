@@ -17,12 +17,12 @@
 
  */
 require('arguable')(module, require('cadence')(function (async, program) {
-    program.helpIf(program.param.help)
-    program.required('select')
-
     var Delta = require('delta')
     var marked = require('marked')
     var cheerio = require('cheerio')
+
+    program.helpIf(program.command.param.help)
+    program.command.required('select')
 
     program.stdin.resume()
     async(function () {
@@ -31,7 +31,7 @@ require('arguable')(module, require('cadence')(function (async, program) {
         delta.ee(program.stdin).on('data', []).on('end')
     }, function (lines) {
         var $ = cheerio.load(Buffer.concat(lines).toString('utf8'))
-        $(program.param.select).each(function () { $(this).html(marked($(this).text())) })
+        $(program.command.param.select).each(function () { $(this).html(marked($(this).text())) })
         program.stdout.write($.html())
     })
 }))
