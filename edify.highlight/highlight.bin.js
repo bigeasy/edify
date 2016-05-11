@@ -18,14 +18,13 @@
 
  */
 require('arguable')(module, require('cadence')(function (async, program) {
-    program.helpIf(program.param.help)
-    program.required('select', 'language')
-
     var Delta = require('delta')
     var highlight = require('highlight.js')
     var cheerio = require('cheerio')
 
-    program.stdin.resume()
+    program.helpIf(program.param.help)
+    program.required('select', 'language')
+
     async(function () {
         program.stdin.resume()
         var delta = new Delta(async())
