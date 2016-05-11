@@ -32,7 +32,7 @@ require('arguable')(module, require('cadence')(function (async, program) {
     }, function (lines) {
         var $ = cheerio.load(Buffer.concat(lines).toString('utf8'))
         $(program.param.select).each(function () {
-            this.html(highlight.highlight(program.param.language, this.text()).value)
+            $(this).html(highlight.highlight(program.param.language, $(this).text()).value)
         })
         program.stdout.write($.html())
     })
