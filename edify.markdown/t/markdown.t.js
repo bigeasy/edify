@@ -1,7 +1,7 @@
 require('proof')(1, require('cadence')(prove))
 
 function prove (async, assert) {
-    var bin = require('../../markdown.bin')
+    var bin = require('../markdown.bin')
     var io
     async(function () {
         io = bin({}, [ '--select', '.markdown' ], {}, async())
