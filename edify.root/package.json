@@ -9,17 +9,17 @@
     ],
     "license":          "MIT",
     "contributors":     [],
-    "homepage":         "https://github.com/bigeasy/prolific",
-    "bugs":             "https://github.com/bigeasy/prolific/issues",
-    "main":             "supervisor",
+    "homepage":         "https://github.com/bigeasy/edify",
+    "bugs":             "https://github.com/bigeasy/edify/issues",
+    "main":             "edify.bin",
     "repository":
     {
                         "type": "git",
-                        "url": "http://github.com/bigeasy/prolific.git"
+                        "url": "http://github.com/bigeasy/edify.git"
     },
     "bin":
     {
-                        "prolific":             "./edify.bin.js"
+                        "edify":             "./edify.bin.js"
     },
     "dependencies":
     {
