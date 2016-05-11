@@ -1,7 +1,7 @@
 {
     "name":             "edify.markdown",
     "description":      "Markdown generator for static JavaScript.",
-    "version":          "9.9.9",
+    "version":          "0.0.0",
     "homepage":         "http://bigeasy.github.com/edify",
     "keywords":
     [
