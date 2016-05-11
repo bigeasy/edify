@@ -12,6 +12,7 @@
     "contributors":     [],
     "homepage":         "https://github.com/bigeasy/edify",
     "bugs":             "https://github.com/bigeasy/edify/issues",
+    "license":          "MIT",
     "main":             "markdown.bin",
     "bin":
     {
