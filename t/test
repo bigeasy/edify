@@ -1,8 +1,6 @@
 #!/bin/sh
 
-pushd `dirname $0` > /dev/null
-node_modules=`pwd -P`/../node_modules
-popd > /dev/null
+node_modules=$(cd $(dirname $0) && echo $PWD)/../node_modules
 
 if ! [ -e "$node_modules/proof" ]; then
     echo "you must: npm install proof" 1>&2
