@@ -15,7 +15,7 @@ branches:
 # build output.
 
 before_install:
-  - npm install && npm install istanbul
+  - npm install proof istanbul
   - for dir in edify.*; do (cd $dir && npm install); done
 
-script: echo 0
+script: t/test
