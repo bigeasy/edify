@@ -30,7 +30,7 @@
     "dependencies":
     {
                         "highlight.js": "9.3.0",
-                        "arguable": "1.x",
+                        "arguable": "2.x",
                         "cadence": "1.x",
                         "delta": "1.x",
                         "cheerio": "0.20.0"
