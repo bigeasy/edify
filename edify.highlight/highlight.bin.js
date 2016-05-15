@@ -14,6 +14,8 @@
         select is required:
             the `--select` argument is a required argument
 
+        language is required:
+            the `--language` argument is a required argument
     ___ . ___
 
  */
