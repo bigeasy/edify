@@ -1,8 +1,7 @@
 {
     "name":             "edify.highlight",
-    "description":      "highlight.js syntax highlighter for static HTML.",
     "version":          "0.0.1",
-    "homepage":         "http://bigeasy.github.com/edify",
+    "description":      "highlight.js syntax highlighter for static HTML.",
     "keywords":
     [
                         "documentation", "api", "docs", "cms", "website",
@@ -10,14 +9,9 @@
     ],
     "author":           "Alan Gutierrez <alan@prettyrobots.com>",
     "contributors":     [],
+    "license":          "MIT",
     "homepage":         "https://github.com/bigeasy/edify",
     "bugs":             "https://github.com/bigeasy/edify/issues",
-    "license":          "MIT",
-    "main":             "highlight.bin",
-    "bin":
-    {
-                        "edify-highlight": "highlight.bin.js"
-    },
     "repository":
     {
                         "type": "git",
@@ -34,6 +28,11 @@
                         "cadence": "1.x",
                         "delta": "1.x",
                         "cheerio": "0.20.0"
+    },
+    "main":             "highlight.bin",
+    "bin":
+    {
+                        "edify-highlight": "highlight.bin.js"
     },
     "scripts":
     {
