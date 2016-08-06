@@ -1,42 +1,41 @@
 {
-    "name":             "edify.markdown",
-    "description":      "Markdown generator for static JavaScript.",
-    "version":          "0.0.1",
-    "homepage":         "http://bigeasy.github.com/edify",
+    "name":                 "edify.markdown",
+    "description":          "Markdown generator for static JavaScript.",
+    "version":              "0.0.1",
+    "homepage":             "http://bigeasy.github.com/edify",
     "keywords":
     [
-                        "documentation", "api", "docs", "cms", "website",
-                        "github", "pages", "html", "markdown", "docco"
+                            "documentation", "api", "docs", "cms", "website",
+                            "github", "pages", "html", "markdown", "docco"
     ],
-    "author":           "Alan Gutierrez <alan@prettyrobots.com>",
-    "contributors":     [],
-    "homepage":         "https://github.com/bigeasy/edify",
-    "bugs":             "https://github.com/bigeasy/edify/issues",
-    "license":          "MIT",
-    "main":             "markdown.bin",
+    "author":               "Alan Gutierrez <alan@prettyrobots.com>",
+    "homepage":             "https://github.com/bigeasy/edify",
+    "bugs":                 "https://github.com/bigeasy/edify/issues",
+    "license":              "MIT",
+    "main":                 "markdown.bin",
     "bin":
     {
-                        "edify-markdown": "markdown.bin.js"
+                            "edify-markdown":               "markdown.bin.js"
     },
     "repository":
     {
-                        "type": "git",
-                        "url": "http://github.com/bigeasy/edify.git"
+                            "type": "git",
+                            "url": "http://github.com/bigeasy/edify.git"
     },
     "devDependencies":
     {
-                        "proof": "1.x"
+                            "proof":                        "1.x"
     },
     "dependencies":
     {
-                        "marked": "0.3.5",
-                        "arguable": "2.x",
-                        "cadence": "1.x",
-                        "delta": "1.x",
-                        "cheerio": "0.20.0"
+                            "marked":                       "0.3.5",
+                            "arguable":                     "2.x",
+                            "cadence":                      "1.x",
+                            "delta":                        "1.x",
+                            "cheerio":                      "0.20.0"
     },
     "scripts":
     {
-                        "test": "(proof run t/*.t.js | tee .proof.out | proof progress) || (proof errors < .proof.out)"
+                            "test": "(proof run t/*.t.js | tee .proof.out | proof progress) || (proof errors < .proof.out)"
     }
 }
