@@ -1,37 +1,37 @@
 {
-    "name":             "edify",
-    "version":          "0.0.7",
-    "author":           "Alan Gutierrez <alan@prettyrobots.com>",
-    "description":      "Root executable for Edify html transformers.",
+    "name":                 "edify",
+    "version":              "0.0.7",
+    "author":               "Alan Gutierrez <alan@prettyrobots.com>",
+    "description":          "Root executable for Edify html transformers.",
     "keywords":
     [
-                        "logging", "log", "syslog"
+                            "logging", "log", "syslog"
     ],
-    "license":          "MIT",
-    "contributors":     [],
-    "homepage":         "https://github.com/bigeasy/edify",
-    "bugs":             "https://github.com/bigeasy/edify/issues",
-    "main":             "edify.bin",
+    "license":              "MIT",
+    "contributors":         [],
+    "homepage":             "https://github.com/bigeasy/edify",
+    "bugs":                 "https://github.com/bigeasy/edify/issues",
+    "main":                 "edify.bin",
     "repository":
     {
-                        "type": "git",
-                        "url": "http://github.com/bigeasy/edify.git"
+                            "type": "git",
+                            "url": "http://github.com/bigeasy/edify.git"
     },
     "bin":
     {
-                        "edify":             "./edify.bin.js"
+                            "edify":                        "./edify.bin.js"
     },
     "dependencies":
     {
-                        "arguable":             "2.x",
-                        "cadence":              "1.x"
+                            "arguable":                     "2.x",
+                            "cadence":                      "1.x"
     },
     "devDependencies":
     {
-                        "proof":                "1.x"
+                            "proof":                        "1.x"
     },
     "scripts":
     {
-                        "test": "proof test t/*.t.js"
+                            "test": "proof test t/*.t.js"
     }
 }
