@@ -21,15 +21,15 @@
     },
     "dependencies":
     {
-                            "marked":                       "0.3.5",
-                            "arguable":                     "2.x",
-                            "cadence":                      "1.x",
-                            "delta":                        "1.x",
-                            "cheerio":                      "0.20.0"
+                            "arguable":                     "2.5.x",
+                            "cadence":                      "1.0.x",
+                            "cheerio":                      "0.20.0",
+                            "delta":                        "1.1.x",
+                            "marked":                       "0.3.5"
     },
     "devDependencies":
     {
-                            "proof":                        "1.x"
+                            "proof":                        "1.0.x"
     },
     "main":                 "markdown.bin",
     "bin":

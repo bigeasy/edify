@@ -21,15 +21,15 @@
     },
     "dependencies":
     {
-                            "highlight.js":                 "9.3.0",
-                            "arguable":                     "2.x",
-                            "cadence":                      "1.x",
-                            "delta":                        "1.x",
-                            "cheerio":                      "0.20.0"
+                            "arguable":                     "2.5.x",
+                            "cadence":                      "1.0.x",
+                            "cheerio":                      "0.20.0",
+                            "delta":                        "1.1.x",
+                            "highlight.js":                 "9.3.0"
     },
     "devDependencies":
     {
-                            "proof":                        "1.x"
+                            "proof":                        "1.0.x"
     },
     "main":                 "highlight.bin",
     "bin":
