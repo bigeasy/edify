@@ -4,7 +4,7 @@ function prove (async, assert) {
     var bin = require('../markdown.bin')
     var io
     async(function () {
-        io = bin({}, [ '--select', '.markdown' ], {}, async())
+        io = bin([ '--select', '.markdown' ], {}, async())
         io.stdin.write('<div class="markdown">*strong*</div>')
         io.stdin.end()
     }, function () {

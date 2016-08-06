@@ -21,8 +21,8 @@ require('arguable')(module, require('cadence')(function (async, program) {
     var marked = require('marked')
     var cheerio = require('cheerio')
 
-    program.helpIf(program.command.param.help)
-    program.command.required('select')
+    program.helpIf(program.ultimate.help)
+    program.required('select')
 
     program.stdin.resume()
     async(function () {
@@ -31,7 +31,7 @@ require('arguable')(module, require('cadence')(function (async, program) {
         delta.ee(program.stdin).on('data', []).on('end')
     }, function (lines) {
         var $ = cheerio.load(Buffer.concat(lines).toString('utf8'))
-        $(program.command.param.select).each(function () { $(this).html(marked($(this).text())) })
+        $(program.ultimate.select).each(function () { $(this).html(marked($(this).text())) })
         program.stdout.write($.html())
     })
 }))

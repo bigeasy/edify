@@ -4,7 +4,7 @@ function prove (async, assert) {
     var bin = require('../highlight.bin')
     var io
     async(function () {
-        io = bin({}, [ '--select', 'pre.javascript', '--language', 'javascript' ], {}, async())
+        io = bin([ '--select', 'pre.javascript', '--language', 'javascript' ], {}, async())
         io.stdin.write('<pre class="javascript">var i = 0;</div>')
         io.stdin.end()
     }, function () {

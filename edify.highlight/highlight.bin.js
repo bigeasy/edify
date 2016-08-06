@@ -24,8 +24,8 @@ require('arguable')(module, require('cadence')(function (async, program) {
     var highlight = require('highlight.js')
     var cheerio = require('cheerio')
 
-    program.helpIf(program.command.param.help)
-    program.command.required('select', 'language')
+    program.helpIf(program.ultimate.help)
+    program.required('select', 'language')
 
     async(function () {
         program.stdin.resume()
@@ -33,8 +33,8 @@ require('arguable')(module, require('cadence')(function (async, program) {
         delta.ee(program.stdin).on('data', []).on('end')
     }, function (lines) {
         var $ = cheerio.load(Buffer.concat(lines).toString('utf8'))
-        $(program.command.param.select).each(function () {
-            $(this).html(highlight.highlight(program.command.param.language, $(this).text()).value)
+        $(program.ultimate.select).each(function () {
+            $(this).html(highlight.highlight(program.ultimate.language, $(this).text()).value)
         })
         program.stdout.write($.html())
     })
