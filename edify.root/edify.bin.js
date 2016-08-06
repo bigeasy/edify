@@ -19,5 +19,5 @@
 require('arguable')(module, require('cadence')(function (async, program) {
     program.helpIf(program.ultimate.help)
 
-    program.delegate('edify.' + program.argv.shift(), {}, async())
+    program.delegate('edify.' + program.argv.shift(), program.argv, async())
 }))
