@@ -1,30 +1,31 @@
 {
-    "name":             "edify",
-    "description":      "Documentation generator for GitHub:Pages.",
-    "version":          "0.0.5",
-    "homepage":         "http://bigeasy.github.com/edify",
+    "private":              true,
+    "name":                 "edify",
+    "description":          "Documentation generator for GitHub:Pages.",
+    "version":              "0.0.5",
+    "homepage":             "http://bigeasy.github.com/edify",
     "keywords":
     [
-                        "documentation", "api", "docs", "cms", "website",
-                        "github", "pages", "html", "markdown", "docco"
+                            "documentation", "api", "docs", "cms", "website",
+                            "github", "pages", "html", "markdown", "docco"
     ],
-    "author":           "Alan Gutierrez <alan@prettyrobots.com>",
-    "contributors":     [],
-    "license":          "MIT",
+    "author":               "Alan Gutierrez <alan@prettyrobots.com>",
+    "contributors":         [],
+    "license":              "MIT",
     "devDependencies":
     {
-                        "proof": "1.x"
+                            "proof":                        "1.x"
     },
     "dependencies":
     {
     },
     "repository":
     {
-                        "type": "git",
-                        "url": "http://github.com/bigeasy/edify.git"
+                            "type": "git",
+                            "url": "http://github.com/bigeasy/edify.git"
     },
     "scripts":
     {
-                        "test": "(proof run */t/*.t.js | tee .proof.out | proof progress) || (proof errors < .proof.out)"
+                            "test": "(proof run */t/*.t.js | tee .proof.out | proof progress) || (proof errors < .proof.out)"
     }
 }
