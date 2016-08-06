@@ -1,8 +1,10 @@
 {
     "name":                 "edify.markdown",
-    "description":          "Markdown generator for static JavaScript.",
+    "description":
+
+      "Markdown generator for static JavaScript.",
+
     "version":              "0.0.1",
-    "homepage":             "http://bigeasy.github.com/edify",
     "keywords":
     [
                             "documentation", "api", "docs", "cms", "website",
@@ -12,19 +14,10 @@
     "homepage":             "https://github.com/bigeasy/edify",
     "bugs":                 "https://github.com/bigeasy/edify/issues",
     "license":              "MIT",
-    "main":                 "markdown.bin",
-    "bin":
-    {
-                            "edify-markdown":               "markdown.bin.js"
-    },
     "repository":
     {
                             "type": "git",
                             "url": "http://github.com/bigeasy/edify.git"
-    },
-    "devDependencies":
-    {
-                            "proof":                        "1.x"
     },
     "dependencies":
     {
@@ -33,6 +26,15 @@
                             "cadence":                      "1.x",
                             "delta":                        "1.x",
                             "cheerio":                      "0.20.0"
+    },
+    "devDependencies":
+    {
+                            "proof":                        "1.x"
+    },
+    "main":                 "markdown.bin",
+    "bin":
+    {
+                            "edify-markdown":               "markdown.bin.js"
     },
     "scripts":
     {
