@@ -1,41 +1,40 @@
 {
-    "name":             "edify.highlight",
-    "version":          "0.0.1",
-    "description":      "highlight.js syntax highlighter for static HTML.",
+    "name":                 "edify.highlight",
+    "version":              "0.0.1",
+    "description":          "highlight.js syntax highlighter for static HTML.",
     "keywords":
     [
-                        "documentation", "api", "docs", "cms", "website",
-                        "github", "pages", "html", "highlight", "docco"
+                            "documentation", "api", "docs", "cms", "website",
+                            "github", "pages", "html", "highlight", "docco"
     ],
-    "author":           "Alan Gutierrez <alan@prettyrobots.com>",
-    "contributors":     [],
-    "license":          "MIT",
-    "homepage":         "https://github.com/bigeasy/edify",
-    "bugs":             "https://github.com/bigeasy/edify/issues",
+    "author":               "Alan Gutierrez <alan@prettyrobots.com>",
+    "license":              "MIT",
+    "homepage":             "https://github.com/bigeasy/edify",
+    "bugs":                 "https://github.com/bigeasy/edify/issues",
     "repository":
     {
-                        "type": "git",
-                        "url": "http://github.com/bigeasy/edify.git"
+                            "type": "git",
+                            "url": "http://github.com/bigeasy/edify.git"
     },
     "devDependencies":
     {
-                        "proof": "1.x"
+                            "proof":                        "1.x"
     },
     "dependencies":
     {
-                        "highlight.js": "9.3.0",
-                        "arguable": "2.x",
-                        "cadence": "1.x",
-                        "delta": "1.x",
-                        "cheerio": "0.20.0"
+                            "highlight.js":                 "9.3.0",
+                            "arguable":                     "2.x",
+                            "cadence":                      "1.x",
+                            "delta":                        "1.x",
+                            "cheerio":                      "0.20.0"
     },
-    "main":             "highlight.bin",
+    "main":                 "highlight.bin",
     "bin":
     {
-                        "edify-highlight": "highlight.bin.js"
+                            "edify-highlight":              "highlight.bin.js"
     },
     "scripts":
     {
-                        "test": "(proof run t/*.t.js | tee .proof.out | proof progress) || (proof errors < .proof.out)"
+                            "test": "(proof run t/*.t.js | tee .proof.out | proof progress) || (proof errors < .proof.out)"
     }
 }
