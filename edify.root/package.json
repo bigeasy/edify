@@ -1,25 +1,22 @@
 {
     "name":                 "edify",
     "version":              "0.0.7",
-    "author":               "Alan Gutierrez <alan@prettyrobots.com>",
-    "description":          "Root executable for Edify html transformers.",
+    "description":
+
+      "Root executable for Edify html transformers.",
+
     "keywords":
     [
                             "logging", "log", "syslog"
     ],
-    "license":              "MIT",
-    "contributors":         [],
+    "author":               "Alan Gutierrez <alan@prettyrobots.com>",
     "homepage":             "https://github.com/bigeasy/edify",
     "bugs":                 "https://github.com/bigeasy/edify/issues",
-    "main":                 "edify.bin",
+    "license":              "MIT",
     "repository":
     {
                             "type": "git",
                             "url": "http://github.com/bigeasy/edify.git"
-    },
-    "bin":
-    {
-                            "edify":                        "./edify.bin.js"
     },
     "dependencies":
     {
@@ -29,6 +26,11 @@
     "devDependencies":
     {
                             "proof":                        "1.0.x"
+    },
+    "main":                 "edify.bin",
+    "bin":
+    {
+                            "edify":                        "edify.bin.js"
     },
     "scripts":
     {
