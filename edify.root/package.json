@@ -23,12 +23,12 @@
     },
     "dependencies":
     {
-                            "arguable":                     "2.x",
-                            "cadence":                      "1.x"
+                            "arguable":                     "2.5.x",
+                            "cadence":                      "1.0.x"
     },
     "devDependencies":
     {
-                            "proof":                        "1.x"
+                            "proof":                        "1.0.x"
     },
     "scripts":
     {
