@@ -36,7 +36,7 @@ require('arguable')(module, require('cadence')(function (async, program) {
             async.forEach(function (selected) {
                 async(function () {
                     var file = $(selected).attr('data-file')
-                    var resolved = path.resolve(__dirname, file)
+                    var resolved = path.resolve(process.cwd(), file)
                     fs.readFile(resolved, 'utf8', async())
                 }, function (body) {
                     $(selected)[program.ultimate.type](body)
