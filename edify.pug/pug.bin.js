@@ -30,6 +30,6 @@ require('arguable')(module, require('cadence')(function (async, program) {
         delta(async()).ee(program.stdin).on('data', []).on('end')
     }, function (lines) {
         var f = pug.compile(Buffer.concat(lines).toString('utf8'))
-        program.stdout.write(f(JSON.parse(program.ultimate.json || '{}')))
+        program.stdout.write(f(JSON.parse(program.ultimate.json || '{}')) + '\n')
     })
 }))
