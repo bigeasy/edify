@@ -21,7 +21,7 @@
     },
     "dependencies":
     {
-                            "arguable":                     "3.0.x",
+                            "arguable":                     "5.0.x",
                             "cadence":                      "1.0.x",
                             "delta":                        "1.1.x",
                             "pug":                          "2.0.0-beta6"
