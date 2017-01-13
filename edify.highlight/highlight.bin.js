@@ -20,7 +20,7 @@
 
  */
 require('arguable')(module, require('cadence')(function (async, program) {
-    var Delta = require('delta')
+    var delta = require('delta')
     var highlight = require('highlight.js')
     var cheerio = require('cheerio')
 
@@ -29,8 +29,7 @@ require('arguable')(module, require('cadence')(function (async, program) {
 
     async(function () {
         program.stdin.resume()
-        var delta = new Delta(async())
-        delta.ee(program.stdin).on('data', []).on('end')
+        delta(async()).ee(program.stdin).on('data', []).on('end')
     }, function (lines) {
         var $ = cheerio.load(Buffer.concat(lines).toString('utf8'))
         $(program.ultimate.select).each(function () {
