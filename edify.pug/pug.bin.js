@@ -29,7 +29,7 @@ require('arguable')(module, require('cadence')(function (async, program) {
         program.stdin.resume()
         delta(async()).ee(program.stdin).on('data', []).on('end')
     }, function (lines) {
-        var f = pug.compile(Buffer.concat(lines).toString('utf8'))
+        var f = pug.compile(Buffer.concat(lines).toString('utf8'), { pretty: true })
         program.stdout.write(f(JSON.parse(program.ultimate.json || '{}')) + '\n')
     })
 }))

@@ -8,6 +8,6 @@ function prove (async, assert) {
         io.stdin.write('p Hello, World!')
         io.stdin.end()
     }, function () {
-        assert(io.stdout.read().toString(), '<p>Hello, World!</p>\n', 'pug')
+        assert(io.stdout.read().toString(), '\n<p>Hello, World!</p>\n', 'pug')
     })
 }
