@@ -26,8 +26,17 @@ require('arguable')(module, require('cadence')(function (async, program) {
     program.helpIf(program.ultimate.help)
 
     var argv = program.argv.map(function (json) {
-        return JSON.parse(json)
+        try {
+            return JSON.parse(json)
+        } catch (error) {
+            try {
+                return require(json)
+            } catch (e) {
+                throw error
+            }
+        }
     })
+    console.log(argv)
 
     async(function () {
         program.stdin.resume()
