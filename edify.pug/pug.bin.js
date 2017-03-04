@@ -22,6 +22,7 @@ require('arguable')(module, require('cadence')(function (async, program) {
     var pug = require('pug')
 
     var delta = require('delta')
+    var fs = require('fs')
 
     program.helpIf(program.ultimate.help)
 
@@ -30,13 +31,12 @@ require('arguable')(module, require('cadence')(function (async, program) {
             return JSON.parse(json)
         } catch (error) {
             try {
-                return require(json)
+                return JSON.parse(fs.readFileSync(json, 'utf8'))
             } catch (e) {
                 throw error
             }
         }
     })
-    console.log(argv)
 
     async(function () {
         program.stdin.resume()
