@@ -23,7 +23,7 @@
     {
                             "arguable":                     "5.0.x",
                             "cadence":                      "3.0.x",
-                            "delta":                        "1.1.x",
+                            "delta":                        "3.0.x",
                             "pug":                          "2.0.3"
     },
     "devDependencies":
