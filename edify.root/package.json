@@ -16,7 +16,7 @@
     "repository":
     {
                             "type": "git",
-                            "url": "http://github.com/bigeasy/edify.git"
+                            "url": "bigeasy/edify"
     },
     "dependencies":
     {
