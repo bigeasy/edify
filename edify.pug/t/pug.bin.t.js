@@ -2,6 +2,7 @@ require('proof/redux')(1, require('cadence')(prove))
 
 function prove (async, assert) {
     var bin = require('../pug.bin')
+    assert.leak('__core-js_shared__')
     var io
     async(function () {
         io = bin([ '"x"' ], async())
