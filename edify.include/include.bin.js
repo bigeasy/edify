@@ -33,7 +33,7 @@ require('arguable')(module, require('cadence')(function (async, program) {
     }, function (lines) {
         var $ = cheerio.load(Buffer.concat(lines).toString('utf8'), {}, false)
         async(function () {
-            async.forEach(function (selected) {
+            async.forEach([ $(program.ultimate.select) ], function (selected) {
                 async(function () {
                     var file = $(selected).attr('data-file')
                     var resolved = path.resolve(process.cwd(), file)
@@ -41,7 +41,7 @@ require('arguable')(module, require('cadence')(function (async, program) {
                 }, function (body) {
                     $(selected)[program.ultimate.type](body)
                 })
-            })($(program.ultimate.select))
+            })
         }, function () {
             program.stdout.write($.html())
         })
