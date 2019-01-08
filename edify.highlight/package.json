@@ -23,7 +23,7 @@
     {
                             "arguable":                     "7.0.x",
                             "cadence":                      "1.0.x",
-                            "cheerio":                      "1.0.0-rc.2",
+                            "cheerio":                      "0.22.0",
                             "delta":                        "3.0.x",
                             "highlight.js":                 "9.13.1"
     },
