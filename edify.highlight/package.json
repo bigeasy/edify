@@ -25,7 +25,7 @@
                             "cadence":                      "1.0.x",
                             "cheerio":                      "1.0.0-rc.2",
                             "delta":                        "3.0.x",
-                            "highlight.js":                 "9.9.0"
+                            "highlight.js":                 "9.13.1"
     },
     "devDependencies":
     {
