@@ -31,7 +31,7 @@ require('arguable')(module, require('cadence')(function (async, program) {
         program.stdin.resume()
         delta(async()).ee(program.stdin).on('data', []).on('end')
     }, function (lines) {
-        var $ = cheerio.load(Buffer.concat(lines).toString('utf8'))
+        var $ = cheerio.load(Buffer.concat(lines).toString('utf8'), {}, false)
         async(function () {
             async.forEach(function (selected) {
                 async(function () {
