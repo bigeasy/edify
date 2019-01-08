@@ -29,7 +29,7 @@
     },
     "devDependencies":
     {
-                            "proof":                        "1.2.x"
+                            "proof":                        "5.0.x"
     },
     "main":                 "highlight.bin",
     "scripts":
