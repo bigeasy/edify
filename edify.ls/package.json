@@ -21,7 +21,7 @@
     },
     "dependencies":
     {
-                            "arguable":                     "5.0.x",
+                            "arguable":                     "7.0.x",
                             "cadence":                      "1.0.x",
                             "delta":                        "3.0.x",
                             "nascent.coalesce":             "0.0.0"
