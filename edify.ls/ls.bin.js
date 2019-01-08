@@ -31,7 +31,7 @@ require('arguable')(module, require('cadence')(function (async, program) {
     async(function () {
         fs.readdir(dir, async())
     }, function (files) {
-        async.map(function (file) {
+        async.map([ files ], function (file) {
             async(function () {
                 fs.stat(path.join(dir, file), async())
             }, function (stats) {
@@ -48,7 +48,7 @@ require('arguable')(module, require('cadence')(function (async, program) {
                     isSocket: stats.isSocket()
                 }
             })
-        })(files)
+        })
     }, function (ls) {
         program.stdout.write(JSON.stringify(ls) + '\n')
     })
