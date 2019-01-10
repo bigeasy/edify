@@ -21,7 +21,7 @@
 require('arguable')(module, require('cadence')(function (async, program) {
     var fs = require('fs')
     var path = require('path')
-    var coalesce = require('nascent.coalesce')
+    var coalesce = require('extant')
 
     var delta = require('delta')
     var dir = coalesce(program.argv[0], '.')
