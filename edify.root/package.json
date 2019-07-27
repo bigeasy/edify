@@ -1,6 +1,6 @@
 {
     "name":                 "edify",
-    "version":              "0.0.12",
+    "version":              "0.1.0",
     "description":
 
       "Root executable for Edify html transformers.",
