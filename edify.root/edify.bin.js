@@ -16,8 +16,7 @@
 
     ___ . ___
 */
-require('arguable')(module, require('cadence')(function (async, program) {
-    program.helpIf(program.ultimate.help)
-
-    program.delegate('edify.' + program.argv.shift(), program.argv, async())
-}))
+require('arguable')(module, async arguable => {
+    arguable.helpIf(arguable.ultimate.help)
+    arguable.delegate(require, 'edify.%s', arguable.argv.shift())
+})
