@@ -20,12 +20,10 @@
     },
     "dependencies":
     {
-                            "arguable":                     "7.0.x",
-                            "cadence":                      "3.0.x"
+                            "arguable":                     "10.0.x"
     },
     "devDependencies":
     {
-                            "proof":                        "5.0.x"
     },
     "main":                 "edify.bin",
     "bin":
