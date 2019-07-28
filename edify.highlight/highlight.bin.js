@@ -19,22 +19,22 @@
     ___ . ___
 
  */
-require('arguable')(module, require('cadence')(function (async, program) {
-    var delta = require('delta')
-    var highlight = require('highlight.js')
-    var cheerio = require('cheerio')
+require('arguable')(module, async arguable => {
+    const highlight = require('highlight.js')
+    const cheerio = require('cheerio')
+    const once = require('prospective/once')
 
-    program.helpIf(program.ultimate.help)
-    program.required('select', 'language')
+    arguable.helpIf(arguable.ultimate.help)
+    arguable.required('select', 'language')
 
-    async(function () {
-        program.stdin.resume()
-        delta(async()).ee(program.stdin).on('data', []).on('end')
-    }, function (lines) {
-        var $ = cheerio.load(Buffer.concat(lines).toString('utf8'), {}, false)
-        $(program.ultimate.select).each(function () {
-            $(this).html(highlight.highlight(program.ultimate.language, $(this).text()).value)
-        })
-        program.stdout.write($.html())
+    const stdin = []
+    arguable.stdin.resume()
+    arguable.options.$stdin.on('data', chunk => stdin.push(chunk))
+    await once(arguable.stdin, 'end')
+    const $ = cheerio.load(Buffer.concat(stdin).toString('utf8'), {}, false)
+    $(arguable.ultimate.select).each(function () {
+        $(this).html(highlight.highlight(arguable.ultimate.language, $(this).text()).value)
     })
-}))
+    arguable.stdout.write($.html())
+    return 0
+})
