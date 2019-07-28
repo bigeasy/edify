@@ -18,38 +18,32 @@
     ___ . ___
 
  */
-require('arguable')(module, require('cadence')(function (async, program) {
-    var fs = require('fs')
-    var path = require('path')
-    var coalesce = require('extant')
+require('arguable')(module, async arguable => {
+    arguable.helpIf(arguable.ultimate.help)
 
-    var delta = require('delta')
-    var dir = coalesce(program.argv[0], '.')
+    const fs = require('fs').promises
+    const path = require('path')
+    const coalesce = require('extant')
 
-    program.helpIf(program.ultimate.help)
-
-    async(function () {
-        fs.readdir(dir, async())
-    }, function (files) {
-        async.map([ files ], function (file) {
-            async(function () {
-                fs.stat(path.join(dir, file), async())
-            }, function (stats) {
-                return {
-                    name: file,
-                    path: path.join(dir, file),
-                    stats: stats,
-                    isFile: stats.isFile(),
-                    isDirectory: stats.isDirectory(),
-                    isBlockDevice: stats.isBlockDevice(),
-                    isCharacterDevice: stats.isCharacterDevice(),
-                    isSymbolicLink: stats.isSymbolicLink(),
-                    isFIFO: stats.isFIFO(),
-                    isSocket: stats.isSocket()
-                }
-            })
+    const dir = coalesce(arguable.argv[0], '.')
+    const ls = []
+    for (const file of await fs.readdir(dir)) {
+        const stats = await fs.stat(path.join(dir, file))
+        ls.push({
+            name: file,
+            path: path.join(dir, file),
+            stats: stats,
+            isFile: stats.isFile(),
+            isDirectory: stats.isDirectory(),
+            isBlockDevice: stats.isBlockDevice(),
+            isCharacterDevice: stats.isCharacterDevice(),
+            isSymbolicLink: stats.isSymbolicLink(),
+            isFIFO: stats.isFIFO(),
+            isSocket: stats.isSocket()
         })
-    }, function (ls) {
-        program.stdout.write(JSON.stringify(ls) + '\n')
-    })
-}))
+    }
+
+    arguable.stdout.write(JSON.stringify(ls) + '\n')
+
+    return 0
+})

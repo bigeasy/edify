@@ -21,18 +21,15 @@
     },
     "dependencies":
     {
-                            "arguable":                     "7.0.x",
-                            "cadence":                      "3.0.x",
-                            "delta":                        "3.0.x",
+                            "arguable":                     "10.0.x",
                             "extant":                       "1.0.x"
     },
     "devDependencies":
     {
-                            "proof":                        "5.0.x"
     },
     "main":                 "ls.bin",
     "scripts":
     {
-                            "test": "(proof run t/*.t.js | tee .proof.out | proof progress) || (proof errors < .proof.out)"
+                            "test": "mocha test/*.bin.test.js"
     }
 }
