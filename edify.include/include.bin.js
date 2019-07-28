@@ -17,33 +17,28 @@
     ___ . ___
 
  */
-require('arguable')(module, require('cadence')(function (async, program) {
-    var delta = require('delta')
-    var path = require('path')
-    var cheerio = require('cheerio')
-    var fs = require('fs')
+require('arguable')(module, async arguable => {
+    const path = require('path')
+    const cheerio = require('cheerio')
+    const fs = require('fs').promises
+    const once = require('prospective/once')
 
-    program.helpIf(program.ultimate.help)
-    program.required('select', 'type')
-    program.assert(/^(?:text|html)$/.test(program.ultimate.type), 'bad type')
+    arguable.helpIf(arguable.ultimate.help)
+    arguable.required('select', 'type')
+    arguable.assert(/^(?:text|html)$/.test(arguable.ultimate.type), 'bad type')
 
-    async(function () {
-        program.stdin.resume()
-        delta(async()).ee(program.stdin).on('data', []).on('end')
-    }, function (lines) {
-        var $ = cheerio.load(Buffer.concat(lines).toString('utf8'), {}, false)
-        async(function () {
-            async.forEach([ $(program.ultimate.select) ], function (selected) {
-                async(function () {
-                    var file = $(selected).attr('data-file')
-                    var resolved = path.resolve(process.cwd(), file)
-                    fs.readFile(resolved, 'utf8', async())
-                }, function (body) {
-                    $(selected)[program.ultimate.type](body)
-                })
-            })
-        }, function () {
-            program.stdout.write($.html())
-        })
-    })
-}))
+    const stdin = []
+    arguable.options.$stdin.resume()
+    arguable.options.$stdin.on('data', chunk => stdin.push(chunk))
+    await once(arguable.stdin, 'end')
+    const $ = cheerio.load(Buffer.concat(stdin).toString('utf8'), {}, false)
+    const selected = $(arguable.ultimate.select)
+    for (let i = 0, I = selected.length; i < I; i++) {
+        const file = $(selected[i]).attr('data-file')
+        const resolved = path.resolve(process.cwd(), file)
+        const body = await fs.readFile(resolved, 'utf8')
+        $(selected[i])[arguable.ultimate.type](body)
+    }
+    arguable.stdout.write($.html())
+    return 0
+})

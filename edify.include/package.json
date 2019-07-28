@@ -21,18 +21,15 @@
     },
     "dependencies":
     {
-                            "arguable":                     "7.0.x",
-                            "cadence":                      "3.0.x",
-                            "cheerio":                      "1.0.0-rc.2",
-                            "delta":                        "3.0.x"
+                            "arguable":                     "10.0.x",
+                            "cheerio":                      "1.0.0-rc.3"
     },
     "devDependencies":
     {
-                            "proof":                        "5.0.x"
     },
     "main":                 "include.bin",
     "scripts":
     {
-                            "test": "(proof run t/*.t.js | tee .proof.out | proof progress) || (proof errors < .proof.out)"
+                            "test": "mocha test/*.test.js"
     }
 }

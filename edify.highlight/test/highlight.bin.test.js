@@ -1,4 +1,4 @@
-describe('higlight', () => {
+describe('highlight', () => {
     const assert = require('assert')
     it('can markdown', async () => {
         const stream = require('stream')
