@@ -1,6 +1,6 @@
 {
     "name":                 "edify.include",
-    "version":              "0.1.0",
+    "version":              "0.1.1",
     "description":
 
       "Include generator for static JavaScript.",
