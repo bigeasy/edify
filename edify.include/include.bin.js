@@ -28,8 +28,8 @@ require('arguable')(module, async arguable => {
     arguable.assert(/^(?:text|html)$/.test(arguable.ultimate.type), 'bad type')
 
     const stdin = []
-    arguable.options.$stdin.resume()
-    arguable.options.$stdin.on('data', chunk => stdin.push(chunk))
+    arguable.stdin.resume()
+    arguable.stdin.on('data', chunk => stdin.push(chunk))
     await once(arguable.stdin, 'end')
     const $ = cheerio.load(Buffer.concat(stdin).toString('utf8'), {}, false)
     const selected = $(arguable.ultimate.select)
