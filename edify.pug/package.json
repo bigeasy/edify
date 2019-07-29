@@ -21,18 +21,15 @@
     },
     "dependencies":
     {
-                            "arguable":                     "7.0.x",
-                            "cadence":                      "3.0.x",
-                            "delta":                        "3.0.x",
-                            "pug":                          "2.0.3"
+                            "arguable":                     "10.0.x",
+                            "pug":                          "2.0.4"
     },
     "devDependencies":
     {
-                            "proof":                        "5.0.x"
     },
     "main":                 "pug.bin",
     "scripts":
     {
-                            "test": "(proof run t/*.t.js | tee .proof.out | proof progress) || (proof errors < .proof.out)"
+                            "test": "mocha test/*.test.js"
     }
 }

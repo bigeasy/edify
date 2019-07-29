@@ -1,6 +1,6 @@
 describe('highlight', () => {
     const assert = require('assert')
-    it('can markdown', async () => {
+    it('can highlight', async () => {
         const stream = require('stream')
         const highlight = require('../highlight.bin')
         const child = highlight([ '--select', 'pre.javascript', '--language', 'javascript' ], {

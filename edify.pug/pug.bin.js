@@ -18,31 +18,22 @@
     ___ . ___
 
  */
-require('arguable')(module, require('cadence')(function (async, program) {
-    var pug = require('pug')
+require('arguable')(module, async arguable => {
+    arguable.helpIf(arguable.ultimate.help)
 
-    var delta = require('delta')
-    var fs = require('fs')
-
-    program.helpIf(program.ultimate.help)
-
-    var argv = program.argv.map(function (json) {
-        try {
-            return JSON.parse(json)
-        } catch (error) {
-            try {
-                return JSON.parse(fs.readFileSync(json, 'utf8'))
-            } catch (e) {
-                throw error
-            }
-        }
-    })
-
-    async(function () {
-        program.stdin.resume()
-        delta(async()).ee(program.stdin).on('data', []).on('end')
-    }, function (lines) {
-        var f = pug.compile(Buffer.concat(lines).toString('utf8'), { pretty: true })
-        program.stdout.write(f({ argv: argv }) + '\n')
-    })
-}))
+    const stream = require('stream')
+    const pug = require('pug')
+    const once = require('prospective/once')
+    const json = require('./json')
+    const argv = []
+    for (const arg of arguable.argv) {
+        argv.push(await json(arg))
+    }
+    const stdin = []
+    arguable.stdin.resume()
+    arguable.stdin.on('data', chunk => stdin.push(chunk))
+    await once(arguable.stdin, 'end')
+    const f = pug.compile(Buffer.concat(stdin).toString('utf8'), { pretty: true })
+    arguable.stdout.write(f({ argv }) + '\n')
+    return 0
+})
