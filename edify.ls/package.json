@@ -1,6 +1,6 @@
 {
     "name":                 "edify.ls",
-    "version":              "0.1.0",
+    "version":              "0.2.0",
     "description":
 
       "Generate a directory listing.",
@@ -29,12 +29,12 @@
                             "proof":                        "^9.0.2"
     },
     "main":                 "ls.bin",
-    "dots":
-    {
-                            "title":                        "Edify LS"
-    },
     "scripts":
     {
                             "test": "proof test/*.bin.test.js"
+    },
+    "dots":
+    {
+                            "title":                        "Edify LS"
     }
 }
