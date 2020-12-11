@@ -8,6 +8,6 @@ require('proof')(2, async okay => {
     })
     child.options.$stdin.write('p Hello, World! #{argv[0]}')
     child.options.$stdin.end()
-    okay(await child.promise, 0, 'exit')
+    okay(await child.exit, 0, 'exit')
     okay(child.options.$stdout.read().toString(), '\n<p>Hello, World! x</p>\n', 'pug')
 })
