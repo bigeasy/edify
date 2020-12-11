@@ -1,6 +1,6 @@
 {
     "name":                 "edify.markdown",
-    "version":              "0.2.0",
+    "version":              "0.2.1",
     "description":
 
       "Markdown generator for static JavaScript.",
@@ -23,8 +23,8 @@
     {
                             "arguable":                     "^12.0.3",
                             "cheerio":                      "1.0.0-rc.3",
-                            "prospective":                  "0.3.0",
-                            "marked":                       "1.2.6"
+                            "marked":                       "1.2.6",
+                            "prospective":                  "0.3.0"
     },
     "devDependencies":
     {
