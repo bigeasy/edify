@@ -1,8 +1,5 @@
-describe('edify', () => {
-    const assert = require('assert')
+require('proof')(1, async okay => {
     const edify = require('../edify.bin')
-    it('can launch', async () => {
-        const child = edify([ 'test' ])
-        assert.equal(await child.promise, 0, 'exit')
-    })
+    const child = edify([ 'test' ])
+    okay(await child.promise, 0, 'exit')
 })

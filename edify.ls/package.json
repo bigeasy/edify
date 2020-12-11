@@ -26,10 +26,11 @@
     },
     "devDependencies":
     {
+                            "proof":                        "^9.0.2"
     },
     "main":                 "ls.bin",
     "scripts":
     {
-                            "test": "mocha test/*.bin.test.js"
+                            "test": "proof test/*.bin.test.js"
     }
 }
