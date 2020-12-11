@@ -28,7 +28,7 @@ require('arguable')(module, async arguable => {
     arguable.stdin.resume()
     arguable.stdin.on('data', chunk => stdin.push(chunk))
     await once(arguable.stdin, 'end')
-    const $ = cheerio.load(Buffer.concat(stdin).toString('utf8'), {}, false)
+    const $ = cheerio.load(Buffer.concat(stdin).toString('utf8'))
     $(arguable.ultimate.select).each(function () { $(this).html(marked($(this).text())) })
     arguable.stdout.write($.html())
     return 0

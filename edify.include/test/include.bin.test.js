@@ -8,5 +8,5 @@ require('proof')(2, async okay => {
     child.options.$stdin.write('<div data-file="test/include.txt" class="include"></div>')
     child.options.$stdin.end()
     okay(await child.promise, 0, 'exit')
-    okay(child.options.$stdout.read().toString(), '<div data-file="test/include.txt" class="include">DT&amp;I\n</div>', 'running')
+    okay(child.options.$stdout.read().toString(), '<html><head></head><body><div data-file="test/include.txt" class="include">DT&amp;I\n</div></body></html>', 'running')
 })

@@ -31,7 +31,7 @@ require('arguable')(module, async arguable => {
     arguable.stdin.resume()
     arguable.stdin.on('data', chunk => stdin.push(chunk))
     await once(arguable.stdin, 'end')
-    const $ = cheerio.load(Buffer.concat(stdin).toString('utf8'), {}, false)
+    const $ = cheerio.load(Buffer.concat(stdin).toString('utf8'))
     const selected = $(arguable.ultimate.select)
     for (let i = 0, I = selected.length; i < I; i++) {
         const file = $(selected[i]).attr('data-file')

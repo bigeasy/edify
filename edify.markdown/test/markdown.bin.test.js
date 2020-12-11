@@ -8,5 +8,5 @@ require('proof')(2, async okay => {
     child.options.$stdin.write('<div class="markdown">*strong*</div>')
     child.options.$stdin.end()
     okay(await child.promise, 0, 'exit')
-    okay(child.options.$stdout.read().toString(), '<div class="markdown"><p><em>strong</em></p>\n</div>', 'running')
+    okay(child.options.$stdout.read().toString(), '<html><head></head><body><div class="markdown"><p><em>strong</em></p>\n</div></body></html>', 'running')
 })
