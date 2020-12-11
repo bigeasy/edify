@@ -27,10 +27,11 @@
     },
     "devDependencies":
     {
+                            "proof":                        "^9.0.2"
     },
     "main":                 "highlight.bin",
     "scripts":
     {
-                            "test": "mocha test/*.test.js"
+                            "test": "proof test/*.test.js"
     }
 }
