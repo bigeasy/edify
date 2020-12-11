@@ -21,5 +21,5 @@ require('arguable')(module, async arguable => {
     const delegate = arguable.delegate(require, 'edify.%s', arguable.argv.shift())
     const child = delegate(arguable.argv)
     arguable.destroyed.then(child.destroy.bind(child))
-    return await child.promise
+    return await child.exit
 })
