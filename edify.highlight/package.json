@@ -1,6 +1,6 @@
 {
     "name":                 "edify.highlight",
-    "version":              "0.3.0",
+    "version":              "0.3.1",
     "description":
 
       "highlight.js syntax highlighter for static HTML.",
@@ -23,8 +23,8 @@
     {
                             "arguable":                     "12.0.3",
                             "cheerio":                      "1.0.0-rc.3",
-                            "prospective":                  "0.3.0",
-                            "highlight.js":                 "10.4.1"
+                            "highlight.js":                 "10.4.1",
+                            "prospective":                  "0.3.0"
     },
     "devDependencies":
     {
