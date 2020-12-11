@@ -1,19 +1,18 @@
-Edify
+[![Actions Status](https://github.com/bigeasy/edify/workflows/Node%20CI/badge.svg)](https://github.com/bigeasy/edify/actions)
+[![codecov](https://codecov.io/gh/bigeasy/edify/branch/master/graph/badge.svg)](https://codecov.io/gh/bigeasy/edify)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Plain-text transforms for generating web sites from the UNIX shell.
+Static page generation with UNIX pipelines.
 
-    Discussion:     https://github.com/bigeasy/edify/issues/1
+| What          | Where                                     |
+| Discussion    | https://github.com/bigeasy/edify/issues/1 |
+| Documentation | https://github.com/bigeasy/edify/         |
+| Source        | https://github.com/bigeasy/edify/         |
+| Issues        | https://github.com/bigeasy/edify/issues   |
+| CI:           | https://github.com/bigeasy/edify/actions  |
+| Coverage:     | https://codecov.io/gh/bigeasy/edify       |
+| License:      | MIT                                       |
 
-    Documentation:  https://bigeasy.github.io/edify
-    Source:         https://github.com/bigeasy/edify
-    Issues:         https://github.com/bigeasy/edify/issues
-    CI:             https://travis-ci.org/bigeasy/edify
-    Coverage:       https://coveralls.io/github/bigeasy/edify
-
-    Install:        `npm install ascension`
-
-    License:        MIT
-
-To learn everything you want to know about Ascension start here:
-
-    http://bigeasy.github.io/edify
+```
+npm install edify
+```
