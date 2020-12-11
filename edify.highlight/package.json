@@ -23,6 +23,7 @@
     {
                             "arguable":                     "12.0.3",
                             "cheerio":                      "1.0.0-rc.3",
+                            "prospective":                  "0.3.0",
                             "highlight.js":                 "10.4.1"
     },
     "devDependencies":

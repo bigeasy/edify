@@ -22,6 +22,7 @@
     "dependencies":
     {
                             "arguable":                     "^12.0.3",
+                            "prospective":                  "0.3.0",
                             "pug":                          "3.0.0"
     },
     "devDependencies":

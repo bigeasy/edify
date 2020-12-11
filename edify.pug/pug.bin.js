@@ -25,14 +25,14 @@ require('arguable')(module, async arguable => {
     const pug = require('pug')
     const once = require('prospective/once')
     const json = require('./json')
-    const stdin = []
-    arguable.stdin.resume()
-    arguable.stdin.on('data', chunk => stdin.push(chunk))
-    await once(arguable.stdin, 'end')
     const argv = []
     for (const arg of arguable.argv) {
         argv.push(await json(arg))
     }
+    const stdin = []
+    arguable.stdin.resume()
+    arguable.stdin.on('data', chunk => stdin.push(chunk))
+    await once(arguable.stdin, 'end').promise
     const f = pug.compile(Buffer.concat(stdin).toString('utf8'), { pretty: true })
     arguable.stdout.write(f({ argv }) + '\n')
     return 0
