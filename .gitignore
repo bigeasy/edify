@@ -1,6 +1,5 @@
-/node_modules/*
-/*/node_modules/*
-!/edify.root/node_modules/edify.test.js
-/coverage
-/*/.nyc_output
 /.nyc_output
+/.wiseguy
+/coverage
+/docs
+/node_modules
