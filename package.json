@@ -3,7 +3,7 @@
     "version":              "0.2.1",
     "description":
 
-      "Documentation generator for GitHub Pages.",
+      "A literate programming utility for generating tutorials and READMEs.",
 
     "keywords":
     [
