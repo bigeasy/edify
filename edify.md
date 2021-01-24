@@ -2,7 +2,8 @@
 [![codecov](https://codecov.io/gh/bigeasy/edify/branch/master/graph/badge.svg)](https://codecov.io/gh/bigeasy/edify)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A comparator function builder.
+A literate programming utility specifically for generating tutorials and
+`README.md`s.
 
 | What          | Where                                     |
 | --- | --- |
