@@ -21,7 +21,7 @@
     },
     "dependencies":
     {
-                            "arguable":                     "12.0.3",
+                            "arguable":                     "12.0.5",
                             "cheerio":                      "1.0.0-rc.5",
                             "highlight.js":                 "10.5.0",
                             "eject":                        "0.2.3"
