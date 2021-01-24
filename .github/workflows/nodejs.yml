@@ -18,7 +18,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm install
-      run: npm install --no-package-lock
+      run: for dir in compassion.*; do (cd $dir && npm install --no-save --no-package-lock); done
     - name: npm ls
       run: npm ls
     - name: npm install nyc, prove, codecov
