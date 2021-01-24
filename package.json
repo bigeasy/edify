@@ -1,30 +1,34 @@
 {
-    "private": true,
-    "name": "edify",
-    "description": "Documentation generator for GitHub Pages.",
-    "version": "0.0.5",
-    "keywords": [
-        "documentation",
-        "api",
-        "docs",
-        "cms",
-        "website",
-        "github",
-        "pages",
-        "html",
-        "markdown",
-        "docco"
+    "name":                 "edify",
+    "version":              "0.2.1",
+    "description":
+
+      "Documentation generator for GitHub Pages.",
+
+    "keywords":
+    [
+                            "documentation", "api", "docs", "cms", "website",
+                            "github", "pages", "html", "markdown", "docco"
     ],
-    "author": "Alan Gutierrez <alan@prettyrobots.com>",
-    "homepage": "http://bigeasy.github.com/edify",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "bigeasy/edify"
+    "author":               "Alan Gutierrez <alan@prettyrobots.com>",
+    "homepage":             "http://bigeasy.github.com/edify",
+    "license":              "MIT",
+    "repository":
+    {
+                            "type": "git",
+                            "url": "bigeasy/edify"
     },
-    "devDependencies": {},
-    "dependencies": {},
-    "scripts": {
-        "test": "node test"
+    "dependencies":
+    {
+                            "arguable":                     "^12.0.5",
+                            "sprintf-js":                   "1.1.2"
+    },
+    "devDependencies":
+    {
+                            "proof":                        "^9.0.3"
+    },
+    "scripts":
+    {
+                            "test": "proof test/*.t.js"
     }
 }
