@@ -21,7 +21,7 @@ require('arguable')(module, async arguable => {
     const path = require('path')
     const cheerio = require('cheerio')
     const fs = require('fs').promises
-    const once = require('prospective/once')
+    const once = require('eject')
 
     arguable.helpIf(arguable.ultimate.help)
     arguable.required('select', 'type')

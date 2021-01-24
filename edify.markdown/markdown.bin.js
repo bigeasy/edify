@@ -19,7 +19,7 @@
 require('arguable')(module, async arguable => {
     const marked = require('marked')
     const cheerio = require('cheerio')
-    const once = require('prospective/once')
+    const once = require('eject')
 
     arguable.helpIf(arguable.ultimate.help)
     arguable.required('select')

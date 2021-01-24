@@ -23,7 +23,7 @@ require('arguable')(module, async arguable => {
 
     const stream = require('stream')
     const pug = require('pug')
-    const once = require('prospective/once')
+    const once = require('eject')
     const json = require('./json')
     const argv = []
     for (const arg of arguable.argv) {
