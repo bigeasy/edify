@@ -24,7 +24,7 @@
 require('arguable')(module, async arguable => {
     const highlight = require('highlight.js')
     const cheerio = require('cheerio')
-    const once = require('prospective/once')
+    const once = require('eject')
 
     arguable.helpIf(arguable.ultimate.help)
     arguable.required('select', 'language')
