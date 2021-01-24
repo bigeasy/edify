@@ -23,7 +23,7 @@
     {
                             "arguable":                     "12.0.3",
                             "cheerio":                      "1.0.0-rc.5",
-                            "highlight.js":                 "10.4.1",
+                            "highlight.js":                 "10.5.0",
                             "eject":                        "0.2.3"
     },
     "devDependencies":
