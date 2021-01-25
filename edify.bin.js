@@ -112,6 +112,10 @@ require('arguable')(module, async arguable => {
         }
     }
 
+    while (text[text.length - 1] == '' && text[text.length - 2] == '') {
+        text.pop()
+    }
+
     process.stdout.write(text.join('\n'))
 
     return 0

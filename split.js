@@ -16,13 +16,31 @@ module.exports = function (source, mode) {
     }
     let parse = 'text'
     let lineNumber = 1
+    function gather (line) {
+        if (parse == 'text') {
+            block.text = lines.splice(0)
+            lines.push(line)
+        } else {
+            lines.push(line)
+            block.code = lines.splice(0)
+            blocks.push(block)
+            block = {
+                text: null,
+                name: null,
+                unblock: false,
+                vargs: { text: {}, code: {} },
+                mode: 'both',
+                code: []
+            }
+        }
+    }
+
     for (const line of source.split('\n')) {
         const code = []
         if (parse == 'text') {
             if (RE.code.test(line)) {
+                gather(line)
                 parse = 'code'
-                block.text = lines.splice(0)
-                lines.push(line)
             } else {
                 if (/\S/.test(line)) {
                     lines.push(line)
@@ -32,18 +50,8 @@ module.exports = function (source, mode) {
             }
         } else {
             if (RE.code.test(line)) {
+                gather(line)
                 parse = 'text'
-                lines.push(line)
-                block.code = lines.splice(0)
-                blocks.push(block)
-                block = {
-                    text: null,
-                    name: null,
-                    unblock: false,
-                    vargs: { text: {}, code: {} },
-                    mode: 'both',
-                    code: []
-                }
             } else {
                 const $ = RE.directive.exec(line)
                 if ($ != null) {
@@ -72,6 +80,10 @@ module.exports = function (source, mode) {
         }
         lineNumber++
     }
+
+    gather('')
+
+    blocks.push(block)
 
     return blocks
 }
