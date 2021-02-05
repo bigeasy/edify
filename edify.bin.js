@@ -56,28 +56,35 @@ require('arguable')(module, async arguable => {
                 const code = []
                 for (const line of block.code) {
                     if (typeof line == 'object') {
-                        if (mode == 'code') {
-                            let included = include(blocks, line)
+                        let included = include(blocks, line)
+                            while (included[included.length - 1] == '') {
+                                included.pop()
+                            }
                             if (included.length != 0) {
                                 included = included.map(_line => /\S/.test(_line) ? `${' '.repeat(line.indent)}${_line}` : _line)
                                 code.push.apply(code, included)
                             }
-                        }
                     } else {
                         code.push(sprintf(line, block.vargs[mode]))
                     }
                 }
-                if (mode == 'text' && block.unblock) {
-                    code.splice(1, 1)
-                    code.splice(code.length - 2, 1)
-                    let indent = Infinity
-                    for (let i = 1, I = code.length - 1; i < I; i++) {
-                        if (/\S/.test(code[i])) {
-                            indent = Math.min(/^(\s*)/.exec(code[i])[1].length, Infinity)
+                if (mode == 'text') {
+                    if (block.unblock) {
+                        code.splice(1, 1)
+                        code.splice(code.length - 2, 1)
+                        let indent = Infinity
+                        for (let i = 1, I = code.length - 1; i < I; i++) {
+                            if (/\S/.test(code[i])) {
+                                indent = Math.min(/^(\s*)/.exec(code[i])[1].length, Infinity)
+                            }
+                        }
+                        for (let i = 1, I = code.length - 1; i < I; i++) {
+                            code[i] = code[i].substring(indent)
                         }
                     }
-                    for (let i = 1, I = code.length - 1; i < I; i++) {
-                        code[i] = code[i].substring(indent)
+                    if (included) {
+                        code.splice(0, 1)
+                        code.splice(code.length - 1, 1)
                     }
                 }
                 if (mode == 'code') {
@@ -105,7 +112,7 @@ require('arguable')(module, async arguable => {
     const text = []
     for (const file of arguable.argv) {
         const body = await fs.readFile(file, 'utf8')
-        const blocks = split(body)
+        const blocks = split(body, mode)
         while (blocks.length != 0) {
             const block = blocks.shift()
             add(blocks, block, text)
