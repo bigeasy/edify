@@ -20,7 +20,7 @@
     },
     "dependencies":
     {
-                            "arguable":                     "^12.0.5",
+                            "arguable":                     "^13.0.0-alpha.1",
                             "sprintf-js":                   "1.1.2"
     },
     "devDependencies":
