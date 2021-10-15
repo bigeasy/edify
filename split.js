@@ -57,16 +57,17 @@ module.exports = function (source, mode) {
                 if ($ != null) {
                     try {
                         const directive = JSON.parse($[2])
-                        block.unblock = directive.unblock || false
-                        block.name = block.name || directive.name
-                        block.vargs.code = directive.code || block.vargs.code
-                        block.vargs.text = directive.text || block.vargs.text
                         if ('include' in directive) {
                             directive.indent = $[1].length
                             if (directive.mode == null || directive.mode == mode) {
                                 lines.push(directive)
                             }
                         } else {
+                            block.unblock = directive.unblock || false
+                            block.save = directive.save || null
+                            block.name = block.name || directive.name
+                            block.vargs.code = directive.code || block.vargs.code
+                            block.vargs.text = directive.text || block.vargs.text
                             block.mode = directive.mode ?? block.mode
                         }
                     } catch (error) {

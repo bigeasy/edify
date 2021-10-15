@@ -26,12 +26,14 @@
  */
 require('arguable')(module, async arguable => {
     const fs = require('fs').promises
+    const path = require('path')
     const split = require('./split')
     const sprintf = require('sprintf-js').sprintf
 
     arguable.helpIf(arguable.ultimate.help)
 
     const mode = arguable.ultimate.mode ?? 'text'
+    const saves = {}
 
     function trim (lines) {
         while (lines[lines.length - 1] == '') {
@@ -43,7 +45,7 @@ require('arguable')(module, async arguable => {
         return lines
     }
 
-    function add(blocks, block, text, included = false) {
+    function add (blocks, block, text, included = false) {
             let trimmed = trim(block.text)
             if (trimmed.length != 0) {
                 if (mode == 'code') {
@@ -87,6 +89,10 @@ require('arguable')(module, async arguable => {
                         code.splice(code.length - 1, 1)
                     }
                 }
+                if (block.save != null) {
+                    saves[block.save] = code.slice(1, code.length - 1).concat('').join('\n')
+                    return
+                }
                 if (mode == 'code') {
                     code.splice(0, 1)
                     code.splice(code.length - 1, 1)
@@ -121,6 +127,10 @@ require('arguable')(module, async arguable => {
 
     while (text[text.length - 1] == '' && text[text.length - 2] == '') {
         text.pop()
+    }
+
+    for (const save in saves) {
+        await fs.writeFile(path.resolve(process.cwd(), save), saves[save], 'utf8')
     }
 
     process.stdout.write(text.join('\n'))
